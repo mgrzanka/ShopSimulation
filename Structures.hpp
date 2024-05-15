@@ -15,6 +15,7 @@ struct Money
 };
 std::ostream& operator<<(std::ostream& os, const Money& money);
 Money& operator-=(Money& first, const Money& second);
+bool operator<(Money& first, const Money& second);
 
 struct StoreTime
 {
@@ -23,5 +24,6 @@ struct StoreTime
     StoreTime(unsigned int minutes);
     unsigned int get_iterations() const;
 };
+std::ostream& operator<<(std::ostream& os, const StoreTime& time_spent);
 
 #endif

@@ -25,6 +25,10 @@ Money& operator-=(Money& first, const Money& second)
     first.full_price = new_full_price;
     return first;
 }
+bool operator<(Money& first, const Money& second)
+{
+    return first.full_price < second.full_price;
+}
 
 
 // StoreTime structure
@@ -33,4 +37,8 @@ StoreTime::StoreTime(unsigned int minutes): minutes{minutes} {}
 unsigned int StoreTime::get_iterations() const
 {
     return static_cast<unsigned int>(ceil(minutes/minutes_per_iteration));
+}
+std::ostream& operator<<(std::ostream& os, const StoreTime& time_spent)
+{
+    return os<<time_spent.minutes<<" minutes";
 }
