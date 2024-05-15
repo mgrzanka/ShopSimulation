@@ -4,7 +4,7 @@
 RegularClient::RegularClient(std::string name, std::string vorname, Money money, StoreTime time_spent):
 Client(name, vorname, money, time_spent) {}
 
-RegularClient::RegularClient(): Client("regular_client__name", "regular_client_vorname", Money(100000), StoreTime(10));
+RegularClient::RegularClient(): Client("regular_client__name", "regular_client_vorname", Money(100000), StoreTime(10)) {}
 
 void RegularClient::interaction_while_paying(std::string employee_name) const
 {
