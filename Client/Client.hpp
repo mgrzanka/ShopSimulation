@@ -1,26 +1,23 @@
 #ifndef _CLIENT_HPP_
 #define _CLIENT_HPP_
-#include <iostream>
 #include <memory>
-#include <ostream>
 
 
 #include "../Structures.hpp"
-#include "../Employee/Employee.hpp"
-#include "../Product/Product.hpp"
-#include "../UserInterface/UserInterface.hpp"
+#include "../UserInterface/ClientInterface.hpp"
 
 
 class Client
 {
-    private:
+    protected:
         // private attributes
         std::string name;
         std::string vorname;
         Money money;
         StoreTime time_spent;
+        std::unique_ptr<UserInterface> client_interface;
 
-        // private, helping methods
+        // protected, helping methods
         virtual void interaction_while_paying(std::string employee_name) const; // it has default method, but can be overrided
         void update_money(Money product_price);
         void display_buying_message(std::string employee_name, std::string product_name, Money product_price) const;

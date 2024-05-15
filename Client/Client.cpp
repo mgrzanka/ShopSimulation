@@ -31,7 +31,7 @@ money {money}, time_spent {time_spent}
         this->name = name;
         this->vorname = vorname;
     }
-    std::unique_ptr<UserInterface> client_interface = std::make_unique<ClientInterface>();
+    client_interface = std::make_unique<ClientInterface>();
 }
 
 void Client::buy_somethig(std::string employee_name, std::string product_name, Money product_price)
@@ -43,7 +43,7 @@ void Client::buy_somethig(std::string employee_name, std::string product_name, M
 
 void Client::interaction_while_paying(std::string employee_name) const
 {
-    client_interface->print(this->get_name() + ": Goodmorning!");
+    client_interface->print(this->get_name() + ": Goodmorning dear " + employee_name+ "!");
 }
 
 void Client::update_money(Money product_price)
@@ -56,7 +56,7 @@ void Client::display_buying_message(std::string employee_name, std::string produ
 {
     client_interface->print(this->get_name() + " is buing " + product_name +
     " for " + std::to_string(product_price.get_whole_part()) + "." + std::to_string(product_price.get_cents()) +
-    product_price.currency_name + "being served by " + employee_name);
+    product_price.currency_name + "and is being served by " + employee_name);
 }
 
 std::ostream& operator<<(std::ostream& os, const Client& client)
