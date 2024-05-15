@@ -47,7 +47,7 @@ void Product::set_price_netto(double new_price_netto)
 
 Money Product::calculate_price() const
 {
-    return price_netto;
+    return Money(price_netto);
 }
 
 int Product::find_shelf() const
