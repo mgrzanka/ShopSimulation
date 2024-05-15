@@ -9,7 +9,8 @@
 
 class ClientInterface: public UserInterface
 {
-    virtual void print(std::string message_to_display) const override;
+    public:
+        virtual void print(std::string message_to_display) const override;
 };
 
 
