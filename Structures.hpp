@@ -7,15 +7,15 @@
 struct Money
 {
     std::string currency_name;
-    int full_price;
-    int get_whole_part();
-    int get_cents();
+    unsigned int full_price;
+    unsigned int get_whole_part();
+    unsigned int get_cents();
 };
 
 struct StoreTime
 {
     float minutes_per_iteration = 5.0;
-    int get_iterations(int minutes);
+    unsigned int get_iterations(unsigned int minutes);
 };
 
 #endif
