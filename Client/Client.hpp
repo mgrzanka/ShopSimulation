@@ -8,6 +8,7 @@
 #include "../Structures.hpp"
 #include "../Employee/Employee.hpp"
 #include "../Product/Product.hpp"
+#include "../UserInterface/UserInterface.hpp"
 
 
 class Client
@@ -20,13 +21,12 @@ class Client
         StoreTime time_spent;
 
         // private, helping methods
-        void talk_to_employee(const std::unique_ptr<Employee>& employee_ptr) const;
-        void update_money(const std::unique_ptr<Product>& product_ptr);
-        virtual void display_buying_message(const std::unique_ptr<Employee>& employee_ptr, const std::unique_ptr<Product>& product_ptr) = 0;
+        virtual void interaction_while_paying(std::string employee_name) const; // it has default method, but can be overrided
+        void update_money(Money product_price);
+        void display_buying_message(std::string employee_name, std::string product_name, Money product_price) const;
 
     public:
-        Client(std::string name, std::string vorname,
-                Money money, StoreTime time_spent);
+        Client(std::string name, std::string vorname, Money money, StoreTime time_spent);
         virtual ~Client() = default;
 
         // getters and setters
@@ -38,7 +38,7 @@ class Client
         virtual void start_message() const = 0;
         virtual void end_message() const = 0;
         // buy something gets employee pointer and product pointer, because they are defined in random event
-        void buy_somethig(const std::unique_ptr<Employee>& employee_ptr, const std::unique_ptr<Product>& product_ptr);
+        void buy_somethig(std::string employee_name, std::string product_name, Money product_price);
 };
 
 std::ostream& operator<<(std::ostream& os, const Client& client);
