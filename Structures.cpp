@@ -25,9 +25,23 @@ Money& operator-=(Money& first, const Money& second)
     first.full_price = new_full_price;
     return first;
 }
+
+Money operator+(Money& first, const Money& second)
+{
+    unsigned int new_full_price = first.full_price + second.full_price;
+    Money new_price(new_full_price);
+    return new_price;
+}
 bool operator<(Money& first, const Money& second)
 {
     return first.full_price < second.full_price;
+}
+
+Money operator*(Money& first, int number)
+{
+    unsigned int new_full_price = first.full_price * number;
+    Money new_price(new_full_price);
+    return new_price;
 }
 
 
