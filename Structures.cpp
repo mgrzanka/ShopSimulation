@@ -1,4 +1,5 @@
 #include <cmath>
+#include <stdexcept>
 
 #include "Structures.hpp"
 
@@ -46,7 +47,11 @@ Money operator*(Money& first, int number)
 
 
 // StoreTime structure
-StoreTime::StoreTime(unsigned int minutes): minutes{minutes} {}
+StoreTime::StoreTime(unsigned int minutes)
+{
+    if(minutes == 0) throw std::invalid_argument("You can't spent 0 minutes in the store!");
+    this->minutes = minutes;
+}
 
 unsigned int StoreTime::get_iterations() const
 {
