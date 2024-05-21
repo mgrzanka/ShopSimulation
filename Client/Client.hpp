@@ -4,7 +4,7 @@
 
 
 #include "../Structures.hpp"
-#include "../UserInterface/ClientInterface.hpp"
+#include "../UserInterface/UserInterface.hpp"
 
 
 class Client
@@ -15,11 +15,10 @@ class Client
         std::string vorname;
         Money money;
         StoreTime time_spent;
-        std::unique_ptr<UserInterface> client_interface;
+        UserInterface client_interface;
 
         // protected, helping methods
         virtual void interaction_while_paying(std::string employee_name) const; // it has default method, but can be overrided
-        void update_money(Money product_price);
         void display_buying_message(std::string employee_name, std::string product_name, Money product_price) const;
 
     public:
@@ -31,11 +30,14 @@ class Client
         Money get_money() const;
         StoreTime get_storetime() const;
 
+        void add_money(unsigned int amount);
+        void take_money(unsigned int amount);
+
         // methods including client's iterraction with the store
         virtual void start_message() const = 0;
         virtual void end_message() const = 0;
         // buy something gets employee pointer and product pointer, because they are defined in random event
-        void buy_somethig(std::string employee_name, std::string product_name, Money product_price);
+        void buy_somethig(std::string employee_name, std::string product_name, const Money& product_price);
 };
 
 std::ostream& operator<<(std::ostream& os, const Client& client);

@@ -8,15 +8,15 @@ MenagersFriend::MenagersFriend(): Client("menagers_friend_name", "menagers_frien
 
 void MenagersFriend::interaction_while_paying(std::string employee_name) const
 {
-    client_interface->print(this->get_name() + ": Hurry up, " + employee_name + ", I don't have a whole day. Do you want me to speak to our beloved Mr. Menager?");
+    client_interface.print(this->get_name() + ": Hurry up, " + employee_name + ", I don't have a whole day. Do you want me to speak to our beloved Mr. Menager?\n");
 }
 
 void MenagersFriend::start_message() const
 {
-    client_interface->print("Menager's friend " + this->get_name() + "is going into the store");
+    client_interface.print("Menager's friend " + this->get_name() + " is going into the store\n");
 }
 
 void MenagersFriend::end_message() const
 {
-    client_interface->print("Menager's friend " + this->get_name() + "is going out of the store");
+    client_interface.print("Menager's friend " + this->get_name() + " is going out of the store\n");
 }

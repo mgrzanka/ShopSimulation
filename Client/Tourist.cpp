@@ -9,15 +9,15 @@ Tourist::Tourist(): Client("tourist_name", "toursit_vorname", Money(1000000), St
 
 void Tourist::interaction_while_paying(std::string employee_name) const
 {
-    client_interface->print(this->get_name() + ": Thank you!");
+    client_interface.print(this->get_name() + ": Thank you!\n");
 }
 
 void Tourist::start_message() const
 {
-    client_interface->print("Tourist " + this->get_name() + "is going into the store");
+    client_interface.print("Tourist " + this->get_name() + " is going into the store\n");
 }
 
 void Tourist::end_message() const
 {
-    client_interface->print("Tourist " + this->get_name() + "is going out of the store");
+    client_interface.print("Tourist " + this->get_name() + " is going out of the store\n");
 }
