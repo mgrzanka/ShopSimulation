@@ -26,15 +26,6 @@ days {days}, starting_hour {starting_hour}, file_handler{path_to_data_file}, sto
     store.add_products(products);
 }
 
-unsigned int Simulation::draw_index(const std::vector<float>& probabilities) const
-{
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::discrete_distribution<> dist(probabilities.begin(), probabilities.end());
-    int draw = dist(gen);
-    return draw;
-}
-
 std::string Simulation::get_hour(int i)
 {
     unsigned int hour = starting_hour + int(i*minutes_per_iteration / 60);
@@ -58,18 +49,14 @@ void Simulation::run()
             simulation_interface.print(":"+get_hour(i)+":");  // print current hour
 
             // Create a new event (uwaga, mozemy ddac ze w jakiejs iteracji nie bedzie zadnego eventu, ale to moze pozniej)
-            std::vector<std::unique_ptr<RandomEvent>> possible_events = store.get_possible_events();  // Store ma zhardcodowaną listę eventów
-            std::vector<float> probabilities;  // inicialize vector of probabilities for each event
-            std::for_each(possible_events.begin(), possible_events.end(),
-            [&](const auto& possible_event){probabilities.push_back(possible_event->get_probability());});
-
-            std::unique_ptr<RandomEvent> event = std::move(possible_events[this->draw_index(probabilities)]);
+            std::unique_ptr<RandomEvent> event = std::move(store.draw_random_event());
             event->start_message();
+            active_events.push_back(event);
 
             // Deal with active events
             for (const auto& active_event : active_events)
             {
-                if(active_event->check_action(i))
+                if(active_event->check_action())
                 {
                     active_event->perform_action();
                     active_event->decrease_counter();
