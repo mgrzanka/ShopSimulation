@@ -23,7 +23,7 @@ bool operator<(Money& first, const Money& second);
 struct StoreTime
 {
     unsigned int minutes;
-    float minutes_per_iteration = 5.0;
+    float minutes_per_iteration = 15.0;
     StoreTime(unsigned int minutes);
     unsigned int get_iterations() const;
 };
