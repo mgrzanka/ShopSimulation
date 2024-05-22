@@ -59,14 +59,17 @@ void Simulation::run()
                 if(active_event->check_action())
                 {
                     active_event->perform_action();
-                    active_event->decrease_counter();
                 }
-                else if(active_event->get_counter() == 0)
+
+                if(active_event->get_counter() == 0)
                 {
                     active_event->end_message();
                     active_events.erase(std::remove(active_events.begin(), active_events.end(), active_event),
                     active_events.end());
+                    active_event->restore_elements();
                 }
+
+                active_event->decrease_counter();
             }
             std::this_thread::sleep_for(std::chrono::seconds(3)); // sleep, so the user won't get epilepsy
         }
