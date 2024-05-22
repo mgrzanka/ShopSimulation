@@ -1,4 +1,5 @@
 #include <cmath>
+#include <stdexcept>
 
 #include "Structures.hpp"
 
@@ -25,14 +26,32 @@ Money& operator-=(Money& first, const Money& second)
     first.full_price = new_full_price;
     return first;
 }
+
+Money operator+(Money& first, const Money& second)
+{
+    unsigned int new_full_price = first.full_price + second.full_price;
+    Money new_price(new_full_price);
+    return new_price;
+}
 bool operator<(Money& first, const Money& second)
 {
     return first.full_price < second.full_price;
 }
 
+Money operator*(Money& first, int number)
+{
+    unsigned int new_full_price = first.full_price * number;
+    Money new_price(new_full_price);
+    return new_price;
+}
+
 
 // StoreTime structure
-StoreTime::StoreTime(unsigned int minutes): minutes{minutes} {}
+StoreTime::StoreTime(unsigned int minutes)
+{
+    if(minutes == 0) throw std::invalid_argument("You can't spent 0 minutes in the store!");
+    this->minutes = minutes;
+}
 
 unsigned int StoreTime::get_iterations() const
 {
