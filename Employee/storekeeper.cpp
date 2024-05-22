@@ -20,12 +20,27 @@ Money Storekeeper::calculate_weekly_salary() const
     return (base_hourly_wage + bonus + Money(8)) * calculate_hours_worked();
 }
 
+void Storekeeper::replenish_stock(std::string product_name)
+{
+    //tu będzie uzupełnienie sklepu
+    display_replenishing_message(product_name);
+}
+
+
+void Storekeeper::display_replenishing_message(std::string product_name)
+{
+     employee_interface.print("Storekeeper " + this->get_name() + ": Those boxes are pretty heavy! I managed to replenish" + product_name + ".\n");
+     employee_interface.print("Storekeeper " + this->get_name() +" has replenished" + product_name + ".\n");
+}
+
+
+
 void Storekeeper::start_message() const
 {
-    employee_interface.print("Storekeeper " + this->get_name() + " has begun a shift.\n")
+    employee_interface.print("Storekeeper " + this->get_name() + " has begun a shift.\n");
 }
 
 void Storekeeper::end_message() const
 {
-    employee_interface.print("Storekeeper " + this->get_name() + " has finished a shift.\n")
+    employee_interface.print("Storekeeper " + this->get_name() + " has finished a shift.\n");
 }

@@ -28,10 +28,10 @@ void Cashier::serve_the_client(std::string product_name)
 
 void Cashier::start_message() const
 {
-    employee_interface.print("Cashier " + this->get_name() + " has begun a shift.\n")
+    employee_interface.print("Cashier " + this->get_name() + " has begun a shift.\n");
 }
 
 void Cashier::end_message() const
 {
-    employee_interface.print("Cashier " + this->get_name() + " has finished a shift.\n")
+    employee_interface.print("Cashier " + this->get_name() + " has finished a shift.\n");
 }
