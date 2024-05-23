@@ -32,6 +32,7 @@ class Employee
     void set_bonus(Money new_bonus);
 
 
+    void get_raise(const Money& raise_money);
     int calculate_hours_worked() const;
     virtual Money calculate_weekly_salary() const;
 

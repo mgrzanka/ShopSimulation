@@ -1,6 +1,7 @@
 #ifndef _CLIENT_HPP_
 #define _CLIENT_HPP_
 #include <memory>
+#include <vector>
 
 
 #include "../Structures.hpp"
@@ -19,7 +20,7 @@ class Client
 
         // protected, helping methods
         virtual void interaction_while_paying(std::string employee_name) const; // it has default method, but can be overrided
-        void display_buying_message(std::string employee_name, std::string product_name, Money product_price) const;
+        void display_buying_message(std::string employee_name, std::vector<std::string> product_names, const Money& product_price) const;
 
     public:
         Client(std::string name, std::string vorname, Money money, StoreTime time_spent);
@@ -37,7 +38,7 @@ class Client
         virtual void start_message() const = 0;
         virtual void end_message() const = 0;
         // buy something gets employee pointer and product pointer, because they are defined in random event
-        void buy_somethig(std::string employee_name, std::string product_name, const Money& product_price);
+        void buy_somethig(std::string employee_name, std::vector<std::string> product_name, const Money& product_price);
 };
 
 std::ostream& operator<<(std::ostream& os, const Client& client);

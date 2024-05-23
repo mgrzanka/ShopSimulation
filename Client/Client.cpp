@@ -2,6 +2,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "Client.hpp"
 
@@ -33,10 +34,10 @@ money {money}, time_spent {time_spent}, client_interface {}
     }
 }
 
-void Client::buy_somethig(std::string employee_name, std::string product_name, const Money& product_price)
+void Client::buy_somethig(std::string employee_name, std::vector<std::string> product_names, const Money& product_price)
 {
     this->interaction_while_paying(employee_name);
-    this->display_buying_message(employee_name, product_name, product_price);
+    this->display_buying_message(employee_name, product_names, product_price);
     this->take_money(product_price.full_price);
 }
 
@@ -56,10 +57,11 @@ void Client::add_money(unsigned int amount)
     money.full_price = money.full_price + amount;
 }
 
-void Client::display_buying_message(std::string employee_name, std::string product_name, Money product_price) const
+void Client::display_buying_message(std::string employee_name, std::vector<std::string> product_names, const Money& product_price) const
 {
-    client_interface.print(this->get_name() + " is buing " + product_name +
-    " for " + std::to_string(product_price.get_whole_part()) + "." + std::to_string(product_price.get_cents()) +
+    client_interface.print(this->get_name() + " is buing ");
+    for(const auto& name: product_names) client_interface.print(name+", ");
+    client_interface.print(" for " + std::to_string(product_price.get_whole_part()) + "." + std::to_string(product_price.get_cents()) +
     product_price.currency_name + " and is being served by " + employee_name+"\n");
 }
 

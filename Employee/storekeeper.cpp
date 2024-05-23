@@ -1,7 +1,7 @@
 #include "storekeeper.hpp"
 
-Storekeeper::Storekeeper(std::string new_name, std::map<std::string, std::tuple<unsigned int, unsigned int>> new_weekly_schedule, Money new_bonus, Money new_base_hourly_wage):
-Employee{new_name, new_weekly_schedule, new_bonus, new_base_hourly_wage}
+Storekeeper::Storekeeper(std::string new_name, std::map<std::string, std::tuple<unsigned int, unsigned int>> new_weekly_schedule, Money new_bonus, Money new_base_hourly_wage, StoreTime time_to_replenish):
+Employee{new_name, new_weekly_schedule, new_bonus, new_base_hourly_wage}, time_to_replenish {time_to_replenish}
 {
     for (auto pair : new_weekly_schedule) {
         if (pair.first == "sun" || pair.first == "sat") {
@@ -12,6 +12,11 @@ Employee{new_name, new_weekly_schedule, new_bonus, new_base_hourly_wage}
 if (calculate_hours_worked()>30) {
         throw std::invalid_argument("Storekeepers cannot work more than 30 hours a week.");
     }
+}
+
+StoreTime Storekeeper::get_time_to_replenish()
+{
+    return time_to_replenish;
 }
 
 
