@@ -119,6 +119,11 @@ Money Employee::calculate_weekly_salary() const
     return base_hourly_wage * calculate_hours_worked();
 }
 
+void Employee::get_raise(const Money& raise_money)
+{
+    this->base_hourly_wage += raise_money;
+}
+
 std::ostream& operator<<(std::ostream& os, const Employee& client)
 {
     return os<<"Employee "<<client.get_name(); //tu cos jeszcze dodam
