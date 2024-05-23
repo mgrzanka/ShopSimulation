@@ -16,8 +16,10 @@ struct Money
 };
 std::ostream& operator<<(std::ostream& os, const Money& money);
 Money& operator-=(Money& first, const Money& second);
+Money& operator+=(Money& first, const Money& second);
 Money operator+(Money& first, const Money& second);
 Money operator*(const Money& first, int number);
+Money operator+(const Money& first, const Money& second);
 bool operator<(Money& first, const Money& second);
 
 struct StoreTime
