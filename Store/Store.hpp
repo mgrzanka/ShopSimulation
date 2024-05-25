@@ -25,7 +25,8 @@ class Store
         std::vector<std::unique_ptr<Employee>>& get_employees() const;
         Money get_money() const;
 
-        std::vector<std::unique<Product>> get_new_products();
+        std::vector<std::unique<Product>*> get_new_products();
+        std::vector<std::unique<Product>*> get_products_to_buy();
 
         void add_money(unsigned int added_money);
         //void take_money_out(int taken_money);   //czy potrzebujemy metody zabierania pieniędzy ze sklepu? skąd wypłata dla pracowników?
@@ -37,5 +38,4 @@ class Store
         std::vector<std::unique_ptr<RandomEvent>> get_possible_events();
         std::unique_ptr<RandomEvent> draw_random_event();
 };
-
 #endif
