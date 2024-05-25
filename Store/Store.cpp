@@ -50,9 +50,9 @@ void Store::add_employees(std::vector<std::unique_ptr<Employee>> new_employees)
                   [this](std::unique_ptr<Employee>&& element) {employees.push_back(std::move(element));});
 }
 
-std::vector<std::unique<Product>*> Store::get_new_products()
+std::vector<std::unique<Product>> Store::get_new_products()
 {
-    std::vector<std::unique<Product>*> new_prod;
+    std::vector<std::unique<Product>> new_prod;
     std::vector<std::unique_ptr<Product>> all_prod = file_handler.load_products();
 
     if (all_prod.empty()) {
@@ -70,14 +70,14 @@ std::vector<std::unique<Product>*> Store::get_new_products()
 
     for (int i = 0; i < num_prod; ++i) {
         int index = dist_index(gen);
-        new_prod.push_back(std::move(&all_prod[index]));
+        new_prod.push_back(std::move(all_prod[index]));
     }
     return new_prod;
 }
 
-std::vector<std::unique<Product>*> Store::get_products_to_buy()
+std::vector<std::unique<Product>> Store::get_products_to_buy()
 {
-    std::vector<std::unique<Product>*> selected_products;
+    std::vector<std::unique<Product>> selected_products;
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -89,63 +89,118 @@ std::vector<std::unique<Product>*> Store::get_products_to_buy()
 
     for (int i = 0; i < num_prod; ++i) {
         int index = dist_index(gen);
-        selected_products.push_back(std::move(&products[index]));
+        selected_products.push_back(std::move(products[index]));
     }
     return selected_products;
 }
 
-std::vector<std::unique_ptr<RandomEvent>> Store::get_possible_events()
+int Store::draw_event_type()
 {
-    std::vector<std::unique_ptr<RandomEvent>> possible_events;
+    float total_probability = 1;
 
-    for (const auto& employee_ptr : employees) {
-    if (std::unique_ptr<Cleaner> cleaner = std::dynamic_pointer_cast<Cleaner>(employee_ptr)) {
-        float probability = 0.1f;
-        possible_events.push_back(std::make_unique<CleanerCleans>(std::ref(store), probability, cleaner));}
-    }
-    for (const auto& employee_ptr : employees) {
-    if (std::unique_ptr<Storekeeper> storekeeper = std::dynamic_pointer_cast<Storekeeper>(employee_ptr)) {
-        float probability = 0.1f;
-        std::vector<std::unique_ptr<Product>> new_prod = get_new_products();
-        possible_events.push_back(std::make_unique<SupplierAddsProducts>(std::ref(store), probability, storekeeper, new_prod));}
-    }
-    auto it = std::find_if(employees.begin(), employees.end(), [](const std::unique_ptr<Employee>& employee) {
-        return dynamic_cast<Manager*>(employee.get()) != nullptr;
-    });
-    if (it != employees.end()){
-        for (const auto& employee_ptr : employees) {
-        if (std::unique_ptr<Manager> manager != std::dynamic_pointer_cast<Manager>(employee_ptr)) {
-            float probability = 0.1f;
-            possible_events.push_back(std::make_unique<MenagerGivesRise>(std::ref(store), probability, it, employee_ptr));}
-        }}
-    for (const auto& employee_ptr : employees) {
-    if (std::unique_ptr<Cashier> cashier = std::dynamic_pointer_cast<Cashier>(employee_ptr)) {
-        float probability = 0.7f;
-        for (const auto& client_ptr : clients) {
-        std::vector<std::unique_ptr<Product>> prod_to_buy = get_products_to_buy();
-        possible_events.push_back(std::make_unique<ClientBuysEvent>(std::ref(store), probability, client_ptr, cashier, prod_to_buy));}
-    }}
-    return possible_events;
-}
+    // 1- CleanerCleans
+    // 2- SupplierAddsProducts
+    // 3- MenagerGivesRise
+    // 4- ClientBuysEvent
 
+    std::vector<int> events_nr = {1, 2, 3, 4};
+    std::vector<float> probability = {0.1f, 0.1f, 0.1f, 0.7f};
 
-std::unique_ptr<RandomEvent> Store::draw_random_event()
-{
-    float total_probability = 0;
-    std::vector<std::unique_ptr<RandomEvent>> events = get_possible_events();
-    for (const auto& event : events) {
-        total_probability += event->get_probability();
-    }
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dis(0, total_probability);
     float random_value = dis(gen);
 
     float cumulative_probability = 0;
-    for (const auto& event : events) {
-        cumulative_probability += event->get_probability();
+    for (const auto& i : events_nr) {
+        cumulative_probability += probability[i-1];
         if (random_value <= cumulative_probability) {
-            return std::make_unique<RandomEvent>(*event);
+            return i;
         }
     }
+}
+
+std::unique_ptr<RandomEvent> Store::draw_random_event()
+{
+    int type = draw_event_type();
+    if (type = 1)
+    {
+        std::vector<Employee> cleaners;
+        for (const auto& employee_ptr : employees) {
+        if (std::unique_ptr<Cleaner> cleaner = std::dynamic_pointer_cast<Cleaner>(employee_ptr)) {
+        cleaners.push_back(cleaner);}
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        std::uniform_int_distribution<> dist(0, cleaners.size() - 1);
+        int index = dist(gen);
+        std::unique_ptr<Cleaner> my_cleaner = cleaners[index];
+        float probability = 0.1f;
+        std::unique_ptr<RandomEvent> event = std::make_unique<CleanerCleans>(std::ref(store), probability, my_cleaner);
+    }}
+    if (type = 2)
+    {
+        std::vector<Employee> storekeepers;
+        for (const auto& employee_ptr : employees) {
+        if (std::unique_ptr<Storekeeper> storekeeper = std::dynamic_pointer_cast<Storekeeper>(employee_ptr)) {
+        storekeepers.push_back(storekeeper);}
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        std::uniform_int_distribution<> dist(0, storekeepers.size() - 1);
+        int index = dist(gen);
+        std::unique_ptr<Storekeeper> my_storekeeper = storekeepers[index];
+        float probability = 0.1f;
+        std::vector<std::unique_ptr<Product>> new_prod = get_new_products();
+        std::unique_ptr<RandomEvent> event = std::make_unique<SupplierAddsProducts>(std::ref(store), probability, my_storekeeper, new_prod);
+    }}
+    if (type = 3)
+    {
+        std::vector<Employee> managers;
+        for (const auto& employee_ptr : employees) {
+        if (std::unique_ptr<Manager> manager = std::dynamic_pointer_cast<Manager>(employee_ptr)) {
+        managers.push_back(manager);}
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dist(0, managers.size() - 1);
+        int index = dist(gen);
+        std::unique_ptr<Manager> my_manager = managers[index];
+
+        std::vector<Employee> current_employees;
+        for (const auto& employee_ptr : employees) {
+        if (std::unique_ptr<Employee> employee != std::dynamic_pointer_cast<Manager>(employee_ptr)) {
+        current_employees.push_back(employee);}
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dist(0, current_employees.size() - 1);
+        int index = dist(gen);
+        std::unique_ptr<Employee> my_employee = current_employees[index];
+
+        float probability = 0.1f;
+        std::unique_ptr<RandomEvent> event = std::make_unique<MenagerGivesRise>(std::ref(store), probability, my_manager, my_employee);
+    }}}
+    if (type = 4)
+    {
+        std::vector<Employee> cashiers;
+        for (const auto& employee_ptr : employees) {
+        if (std::unique_ptr<Cashier> cashier = std::dynamic_pointer_cast<Cashier>(employee_ptr)) {
+        cashiers.push_back(cashier);}
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dist(0, cashiers.size() - 1);
+        int index = dist(gen);
+        std::unique_ptr<Cashier> my_cashier = cashiers[index];
+
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dist(0, clients.size() - 1);
+        int index = dist(gen);
+        std::unique_ptr<Client> my_client = clients[index];
+
+        float probability = 0.7f;
+        std::vector<std::unique_ptr<Product>> prod_to_buy = get_products_to_buy();
+        std::unique_ptr<RandomEvent> event = std::make_unique<ClientBuysEvent>(std::ref(store), probability, my_client, my_cashier, prod_to_buy);
+    }}
+    return event;
 }
