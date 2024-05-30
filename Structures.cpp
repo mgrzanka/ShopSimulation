@@ -26,6 +26,12 @@ Money& operator-=(Money& first, const Money& second)
     first.full_price = new_full_price;
     return first;
 }
+Money& operator+=(Money& first, const Money& second)
+{
+    unsigned int new_full_price = first.full_price + second.full_price;
+    first.full_price = new_full_price;
+    return first;
+}
 
 Money operator+(Money& first, const Money& second)
 {
@@ -45,6 +51,10 @@ Money operator*(Money& first, int number)
     return new_price;
 }
 
+Money operator+(const Money& first, const Money& second)
+{
+    return first.full_price + second.full_price;
+}
 
 // StoreTime structure
 StoreTime::StoreTime(unsigned int minutes)
