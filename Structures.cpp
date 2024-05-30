@@ -15,6 +15,8 @@ unsigned int Money::get_cents() const
     return int(full_price % 100);
 }
 
+Money::Money(): full_price{0} {}
+
 Money::Money(unsigned int full_price): full_price{full_price} {}
 std::ostream& operator<<(std::ostream& os, const Money& money)
 {
@@ -44,7 +46,7 @@ bool operator<(Money& first, const Money& second)
     return first.full_price < second.full_price;
 }
 
-Money operator*(Money& first, int number)
+Money operator*(const Money& first, int number)
 {
     unsigned int new_full_price = first.full_price * number;
     Money new_price(new_full_price);

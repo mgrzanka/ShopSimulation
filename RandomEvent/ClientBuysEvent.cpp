@@ -8,14 +8,14 @@
 
 
 
-ClientBuysEvent::ClientBuysEvent(Store& store, float probability, std::unique_ptr<Client> client,
-                                std::unique_ptr<Cashier> employee,
-                                std::vector<std::unique_ptr<Product>> products): RandomEvent(store, probability)
+ClientBuysEvent::ClientBuysEvent(Store& store, float probability, std::unique_ptr<Client>& client,
+                                std::unique_ptr<Cashier>& employee,
+                                std::vector<std::unique_ptr<Product>>& products): RandomEvent(store, probability)
 {
     this->client = std::move(client);
     this->employee = std::move(employee);
     std::for_each(products.begin(), products.end(),
-                    [&](const auto& p){this->products.push_back(std::move(p));});
+                    [&](auto& p){this->products.push_back(std::move(p));});
     this->counter = client->get_storetime().get_iterations();
 }
 
@@ -35,7 +35,7 @@ void ClientBuysEvent::perform_action()
 {
 
     int total_price = std::accumulate(products.begin(), products.end(), 0,
-                            [](int price, const auto& p) {return price + p->get_price().full_price;});
+                            [](int price, const auto& p) {return price + p->calculate_price().full_price;});
     std::vector<std::string> names;
     std::for_each(products.begin(), products.end(), [&](const auto& p){names.push_back(p->get_name());});
     client->buy_somethig(employee->get_name(), names, Money(total_price));
@@ -45,8 +45,8 @@ void ClientBuysEvent::perform_action()
 
 void ClientBuysEvent::restore()
 {
-    std::vector<std::unique_ptr<Client>> c = {std::move(client)};
-    std::vector<std::unique_ptr<Cashier>> e = {std::move(employee)};
+    std::vector<std::unique_ptr<Client>> c; c.push_back(std::move(client));
+    std::vector<std::unique_ptr<Employee>> e; e.push_back(std::move(employee));
     store.add_clients(c);
     store.add_employees(e);
     store.add_products(products);

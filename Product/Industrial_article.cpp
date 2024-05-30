@@ -14,7 +14,7 @@ int IndustrialArticle::find_shelf() const
 
 Money IndustrialArticle::calculate_price() const
 {
-    unsigned int final_price = 1.08 * price_netto;
+    unsigned int final_price = 1.08 * price_netto.full_price;
     if(final_price == 0)
     {
         throw std::invalid_argument("Wrong price");
@@ -23,5 +23,5 @@ Money IndustrialArticle::calculate_price() const
 }
 
 bool IndustrialArticle::operator==(const IndustrialArticle& other) const {
-    return name == other.name && price_netto == other.price_netto;
+    return name == other.name && price_netto.full_price == other.price_netto.full_price;
 }

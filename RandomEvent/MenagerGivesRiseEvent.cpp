@@ -4,7 +4,7 @@
 #include <vector>
 
 
-MenagerGivesRise::MenagerGivesRise(Store& store, float probability, std::unique_ptr<Manager> menager, std::unique_ptr<Employee> employee):
+MenagerGivesRise::MenagerGivesRise(Store& store, float probability, std::unique_ptr<Manager>& menager, std::unique_ptr<Employee>& employee):
 RandomEvent(store, probability)
 {
     this->menager = std::move(menager);
@@ -34,6 +34,6 @@ bool MenagerGivesRise::check_action() const
 
 void MenagerGivesRise::restore()
 {
-    std::vector<std::unique_ptr<Employee>> e = {std::move(employee), std::move(menager)};
-    store.add_employee(e);
+    std::vector<std::unique_ptr<Employee>> e; e.push_back(std::move(employee)); e.push_back(std::move(menager));
+    store.add_employees(e);
 }

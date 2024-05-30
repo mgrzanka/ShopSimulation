@@ -5,18 +5,18 @@
 #include <vector>
 
 
-SupplierAddsProducts::SupplierAddsProducts(Store& store, float probability, std::unique_ptr<Storekeeper> store_keeper, std::vector<std::unique_ptr<Product>> products):
+SupplierAddsProducts::SupplierAddsProducts(Store& store, float probability, std::unique_ptr<Storekeeper>& store_keeper, std::vector<std::unique_ptr<Product>>& products):
 RandomEvent(store, probability)
 {
     this->store_keeper = std::move(store_keeper);
     std::for_each(products.begin(), products.end(),
-                    [&](const auto& p){this->products.push_back(std::move(p));});
+                    [&](auto& p){this->products.push_back(std::move(p));});
     this->counter = store_keeper->get_time_to_replenish().get_iterations();
 }
 
 void SupplierAddsProducts::restore()
 {
-    std::vector<std::unique_ptr<Storekeeper>> e = {std::move(store_keeper)};
+    std::vector<std::unique_ptr<Employee>> e; e.push_back(std::move(store_keeper));
     store.add_employees(e);
     store.add_products(products);
 }

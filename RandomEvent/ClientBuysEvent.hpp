@@ -15,8 +15,8 @@ class ClientBuysEvent: public RandomEvent
     std::unique_ptr<Cashier> employee;
     std::vector<std::unique_ptr<Product>> products;
     public:
-        ClientBuysEvent(Store& store, float probability, std::unique_ptr<Client> client, std::unique_ptr<Cashier> employee,
-                        std::vector<std::unique_ptr<Product>> products);
+        ClientBuysEvent(Store& store, float probability, std::unique_ptr<Client>& client, std::unique_ptr<Cashier>& employee,
+                        std::vector<std::unique_ptr<Product>>& products);
 
         virtual void start_message() const override;
         virtual void end_message() const override;

@@ -4,7 +4,7 @@
 #include <vector>
 
 
-CleanerCleans::CleanerCleans(Store& store, float probability, std::unique_ptr<Cleaner> cleaner):
+CleanerCleans::CleanerCleans(Store& store, float probability, std::unique_ptr<Cleaner>& cleaner):
 RandomEvent(store, probability)
 {
     this->cleaner = std::move(cleaner);
@@ -28,6 +28,6 @@ void CleanerCleans::perform_action()
 
 void CleanerCleans::restore()
 {
-    std::vector<std::unique_ptr<Cleaner>> c = {std::move(cleaner)};
-    store.add_employee(c);
+    std::vector<std::unique_ptr<Employee>> c; c.push_back(std::move(cleaner));
+    store.add_employees(c);
 }

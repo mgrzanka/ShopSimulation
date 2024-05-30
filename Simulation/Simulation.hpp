@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "../Client/RegularClient.hpp"
 
 #include "../Structures.hpp"
 #include "../Store/Store.hpp"
@@ -23,7 +24,6 @@ class Simulation
     FileHandler file_handler;
     UserInterface simulation_interface;
 
-    unsigned int draw_index(const std::vector<float>& probabilities) const;
     std::string get_hour(int i);
 
     public:

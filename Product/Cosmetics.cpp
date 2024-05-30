@@ -17,7 +17,7 @@ int Cosmetics::find_shelf() const
 
 Money Cosmetics::calculate_price() const
 {
-    unsigned int final_price = 1.03 * price_netto;
+    unsigned int final_price = 1.03 * price_netto.full_price;
     if(final_price == 0)
     {
         throw std::invalid_argument("Wrong price");
@@ -26,6 +26,6 @@ Money Cosmetics::calculate_price() const
 }
 
 bool Cosmetics::operator==(const Cosmetics& other) const {
-    return name == other.name && price_netto == other.price_netto && type == other.type;
+    return name == other.name && price_netto.full_price == other.price_netto.full_price && type == other.type;
 }
 
