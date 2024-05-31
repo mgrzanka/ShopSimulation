@@ -52,7 +52,7 @@ std::vector<std::unique_ptr<Product>> FileHandler::load_products()
     while (std::getline(file, line)) {
         std::istringstream iss(line);
         std::string product_type, name, additional_attribute;
-        int int_price;
+        int int_price = 0;
         Money price = Money(int_price);
 
 
