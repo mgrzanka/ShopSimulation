@@ -1,5 +1,6 @@
 #include "catch_amalgamated.hpp"
 #include "../Store/Store.hpp"
+#include "../EventsGenerator/EventsGenerator.hpp"
 #include <numeric>
 #include <stdexcept>
 #include <vector>
