@@ -15,7 +15,3 @@ Money FruitVegetable::calculate_price() const
     return Money(price_netto);
 }
 
-bool FruitVegetable::operator==(const FruitVegetable& other) const {
-    return name == other.name && price_netto.full_price == other.price_netto.full_price && amount_in_pack == other.amount_in_pack;
-}
-

@@ -25,6 +25,3 @@ Money DairyProduct::calculate_price() const
     return Money(final_price);
 }
 
-bool DairyProduct::operator==(const DairyProduct& other) const {
-    return name == other.name && price_netto.full_price == other.price_netto.full_price && protein_content == other.protein_content;
-}

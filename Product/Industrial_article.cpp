@@ -22,6 +22,3 @@ Money IndustrialArticle::calculate_price() const
     return Money(final_price);
 }
 
-bool IndustrialArticle::operator==(const IndustrialArticle& other) const {
-    return name == other.name && price_netto.full_price == other.price_netto.full_price;
-}

@@ -24,7 +24,3 @@ Money Beverage::calculate_price() const
     }
     return Money(final_price);
 }
-
-bool Beverage::operator==(const Beverage& other) const {
-    return name == other.name && price_netto.full_price == other.price_netto.full_price;
-}

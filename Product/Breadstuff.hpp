@@ -12,7 +12,7 @@ class Breadstuff : public Product
         Breadstuff(std::string name, Money price_netto, int glycemic_index);
         int find_shelf() const override;
         Money calculate_price() const override;
-        bool operator==(const Breadstuff& other) const;
+
         ~Breadstuff() = default;
 };
 

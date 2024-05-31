@@ -12,7 +12,7 @@ class FruitVegetable : public Product
         FruitVegetable(std::string name, Money price_netto, int amount_in_pack);
         int find_shelf() const override;
         Money calculate_price() const override;
-        bool operator==(const FruitVegetable& other) const;
+
         ~FruitVegetable() = default;
 };
 

@@ -12,7 +12,7 @@ class DairyProduct : public Product
         DairyProduct(std::string name, Money price_netto, double protein_content);
         int find_shelf() const override;
         Money calculate_price() const override;
-        bool operator==(const DairyProduct& other) const;
+
         ~DairyProduct() = default;
 };
 

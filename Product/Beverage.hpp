@@ -10,7 +10,7 @@ class Beverage : public Product
         Beverage(std::string name, Money price_netto);
         int find_shelf() const override;
         Money calculate_price() const override;
-        bool operator==(const Beverage& other) const;
+
         ~Beverage() = default;
 };
 
