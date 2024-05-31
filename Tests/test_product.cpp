@@ -49,7 +49,7 @@ TEST_CASE("Breadstuff tests") {
     breadstuff.set_name("Bread roll");
     REQUIRE(breadstuff.get_name() == "Bread roll");
     breadstuff.set_price_netto(400);
-    REQUIRE(breadstuff.get_price_netto().fyll_price == 400);
+    REQUIRE(breadstuff.get_price_netto().full_price == 400);
     REQUIRE(breadstuff.find_shelf() == 110);
     REQUIRE(breadstuff.calculate_price().full_price == 420);
     REQUIRE_THROWS_AS(breadstuff.set_name(""), std::invalid_argument);
