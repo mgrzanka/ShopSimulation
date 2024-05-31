@@ -10,9 +10,10 @@
 class RandomEvent
 {
     protected:
+        Store& store;
         unsigned int counter;
         float probability;  // probability bedzie zhardcodowane dla danego rodzaju eventu
-        Store& store;
+        // Store& store;
     public:
         RandomEvent(Store& store, float probability);
         virtual ~RandomEvent() = default;

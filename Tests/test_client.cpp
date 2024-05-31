@@ -55,6 +55,6 @@ TEST_CASE("wirtual methods")
     regular.start_message();
     regular.end_message();
     Money money(13);
-    regular.buy_somethig("Amadeusz", "Woda", money);
+    regular.buy_somethig("Amadeusz", {"Woda"}, money);
 
 }
