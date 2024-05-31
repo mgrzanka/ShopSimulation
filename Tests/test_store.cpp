@@ -103,6 +103,9 @@ TEST_CASE("EventGenerator tests")
     std::vector<float> probabilities_of_events = {0.25, 0.25, 0.25, 0.25};
     EventGenerator event_generator(store, probabilities_of_events);
 
+    std::vector<float> wrong_probabilities_of_events = {0.3, 0.4, 0.25, 0.25};
+    REQUIRE_THROWS_AS(EventGenerator(store, wrong_probabilities_of_events), std::invalid_argument);
+
     SECTION("Draw event type with no exclusions") {
         std::vector<int> exclude_indexes;
         std::map<int, int> event_counts;
