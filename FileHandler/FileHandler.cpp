@@ -15,7 +15,8 @@ path(path)
 
 std::vector<std::tuple<std::string, std::string>> FileHandler::load_names()
 {
-     file.open(path);
+    {
+    file.open(path);
     if (!file.is_open()) {
         std::cerr << "Could not open the file!" << std::endl;
     }
@@ -23,17 +24,19 @@ std::vector<std::tuple<std::string, std::string>> FileHandler::load_names()
 
     std::string line;
     while (std::getline(file, line)) {
+        line.erase(line.find_last_not_of(" \n\r\t")+1);
         std::stringstream lineStream(line);
         std::string name;
         std::string surname;
 
-        if (std::getline(lineStream, name, ',') && std::getline(lineStream, surname)) {
+        if (std::getline(lineStream, name, ' ') && std::getline(lineStream, surname)) {
             names.emplace_back(name, surname);
         }
     }
 
     file.close();
     return names;
+}
 }
 
 
