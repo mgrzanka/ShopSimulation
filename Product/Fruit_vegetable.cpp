@@ -12,7 +12,7 @@ int FruitVegetable::find_shelf() const
 
 Money FruitVegetable::calculate_price() const
 {
-    return Money(price_netto);
+    return price_netto;
 }
 
 bool FruitVegetable::operator==(const FruitVegetable& other) const {

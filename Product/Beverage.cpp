@@ -17,7 +17,8 @@ int Beverage::find_shelf() const
 
 Money Beverage::calculate_price() const
 {
-    unsigned int final_price = 1.23 * price_netto.full_price;
+    double temp = 1.23 * price_netto.full_price;
+    unsigned int final_price = (int)temp;
     if(final_price == 0)
     {
         throw std::invalid_argument("Wrong price");
@@ -26,5 +27,5 @@ Money Beverage::calculate_price() const
 }
 
 bool Beverage::operator==(const Beverage& other) const {
-    return name == other.name && price_netto == other.price_netto;
+    return name == other.name && price_netto == other.price_netto.full_price;
 }
