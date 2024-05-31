@@ -19,3 +19,9 @@ TEST(Store, Store)
     store.add_clients(vec);
     auto& products = store.get_products();
 }
+
+
+TEST(EventGenerator, EventGenerator)
+{
+
+}

@@ -23,6 +23,7 @@ class Store
                 std::vector<std::unique_ptr<Client>>& clients,
                 std::vector<std::unique_ptr<Employee>>& employees,
                 Money money);
+        Store() = default;
 
         const std::vector<std::unique_ptr<Product>>& get_products() const;
         const std::vector<std::unique_ptr<Client>>& get_clients() const;

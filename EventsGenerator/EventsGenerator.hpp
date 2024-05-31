@@ -17,12 +17,13 @@ class EventGenerator
     std::vector<float> probabilities_of_events;  // dany jako input programu od uzytkownika
     std::vector<int> events_indexes;
 
-    int draw_event_type();
+    int draw_event_type(std::vector<int> exclude_indexes);
+    std::vector<std::unique_ptr<Product>> pick_products();
 
     public:
         EventGenerator(Store& store_reference,
                         std::vector<float> probabilities_of_events);
-        std::unique_ptr<RandomEvent>& draw_event();
+        std::unique_ptr<RandomEvent> draw_event();
 };
 
 #endif
