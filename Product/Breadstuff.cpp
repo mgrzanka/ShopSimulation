@@ -17,7 +17,8 @@ int Breadstuff::find_shelf() const
 
 Money Breadstuff::calculate_price() const
 {
-    unsigned int final_price = 1.05 * price_netto;
+    double temp =  1.05 * price_netto.full_price;
+    unsigned int final_price = (int)temp;
     if(final_price == 0)
     {
         throw std::invalid_argument("Wrong price");
@@ -26,6 +27,6 @@ Money Breadstuff::calculate_price() const
 }
 
 bool Breadstuff::operator==(const Breadstuff& other) const {
-    return name == other.name && price_netto == other.price_netto && glycemic_index == other.glycemic_index;
+    return name == other.name && price_netto == other.price_netto.full_price && glycemic_index == other.glycemic_index;
 }
 

@@ -8,7 +8,7 @@ name{new_name}, price_netto{new_price_netto}
         throw std::invalid_argument("Name cannot be empty");
     }
 
-    if(new_price_netto == 0)
+    if(new_price_netto.full_price == 0)
     {
         throw std::invalid_argument("Zero price value");
     }
@@ -21,7 +21,7 @@ std::string Product::get_name() const
 
 Money Product::get_price_netto() const
 {
-    return Money(price_netto);
+    return price_netto;
 }
 
 

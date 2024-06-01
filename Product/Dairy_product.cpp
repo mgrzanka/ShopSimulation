@@ -17,7 +17,8 @@ int DairyProduct::find_shelf() const
 
 Money DairyProduct::calculate_price() const
 {
-    unsigned int final_price = 1.05 * price_netto;
+    double temp = 1.05 * price_netto.full_price;
+    unsigned int final_price = (int)temp;
     if(final_price == 0)
     {
         throw std::invalid_argument("Wrong price");
@@ -26,5 +27,5 @@ Money DairyProduct::calculate_price() const
 }
 
 bool DairyProduct::operator==(const DairyProduct& other) const {
-    return name == other.name && price_netto == other.price_netto && protein_content == other.protein_content;
+    return name == other.name && price_netto.full_price == other.price_netto.full_price && protein_content == other.protein_content;
 }
