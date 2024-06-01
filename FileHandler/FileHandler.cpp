@@ -42,8 +42,7 @@ std::vector<std::tuple<std::string, std::string>> FileHandler::load_names()
 
 std::vector<std::unique_ptr<Product>> FileHandler::load_products()
 {
-    std::vector<std::unique_ptr<Product>> products;
-    std::ifstream file(path);
+   std::vector<std::unique_ptr<Product>> products;
     std::string line;
 
     file.open(path);
@@ -54,16 +53,11 @@ std::vector<std::unique_ptr<Product>> FileHandler::load_products()
 
     while (std::getline(file, line)) {
         std::istringstream iss(line);
-        std::string product_type, name, additional_attribute;
-        int int_price = 0;
+        std::string product_type, name, str_price, additional_attribute;
+
+        iss >> product_type >> name >> str_price >> additional_attribute;
+        int int_price = std::stoi(str_price);
         Money price = Money(int_price);
-
-
-
-        iss >> product_type >> name >> additional_attribute;
-        if (!(iss >> additional_attribute)) {
-            additional_attribute = "";
-        }
 
         if (product_type == "fruit_vegetable") {
             int amount_in_pack = std::stoi(additional_attribute);
