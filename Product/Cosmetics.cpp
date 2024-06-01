@@ -27,6 +27,6 @@ Money Cosmetics::calculate_price() const
 }
 
 bool Cosmetics::operator==(const Cosmetics& other) const {
-    return name == other.name && price_netto == other.price_netto.full_price && type == other.type;
+    return name == other.name && price_netto.full_price == other.price_netto.full_price && type == other.type;
 }
 

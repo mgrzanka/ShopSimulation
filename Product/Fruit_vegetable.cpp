@@ -1,4 +1,4 @@
-#include "fruit_vegetable.hpp"
+#include "Fruit_vegetable.hpp"
 
 FruitVegetable::FruitVegetable(std::string name, Money price_netto, int amount_in_pack) :
 Product{name, price_netto},
@@ -16,6 +16,6 @@ Money FruitVegetable::calculate_price() const
 }
 
 bool FruitVegetable::operator==(const FruitVegetable& other) const {
-    return name == other.name && price_netto == other.price_netto && amount_in_pack == other.amount_in_pack;
+    return name == other.name && price_netto.full_price == other.price_netto.full_price && amount_in_pack == other.amount_in_pack;
 }
 
