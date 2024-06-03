@@ -31,7 +31,6 @@ class Employee
     void set_weekly_schedule(std::map<std::string, std::tuple<unsigned int, unsigned int>> new_weekly_schedule);
     void set_bonus(Money new_bonus);
 
-
     void get_raise(const Money& raise_money);
     int calculate_hours_worked() const;
     virtual Money calculate_weekly_salary() const;

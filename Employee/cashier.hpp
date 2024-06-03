@@ -14,9 +14,6 @@ class Cashier : public Employee
 
     void start_message() const override;
     void end_message() const override;
-
-
-
 };
 
 

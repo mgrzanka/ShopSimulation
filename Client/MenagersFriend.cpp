@@ -1,10 +1,10 @@
 #include "MenagersFriend.hpp"
 
 
-MenagersFriend::MenagersFriend(std::string name, std::string vorname, Money money, StoreTime time_spent):
-Client(name, vorname, money, time_spent) {}
+MenagersFriend::MenagersFriend(std::string name, std::string vorname, Money money):
+Client(name, vorname, money) {}
 
-MenagersFriend::MenagersFriend(): Client("menagers_friend_name", "menagers_friend_vorname", Money(10000), StoreTime(5)) {}
+MenagersFriend::MenagersFriend(): Client("menagers_friend_name", "menagers_friend_vorname", Money(10000)) {}
 
 void MenagersFriend::interaction_while_paying(std::string employee_name) const
 {

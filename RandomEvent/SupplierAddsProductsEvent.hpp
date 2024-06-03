@@ -11,13 +11,11 @@
 class SupplierAddsProducts: public RandomEvent
 {
     std::unique_ptr<Storekeeper> store_keeper;
-    std::vector<std::unique_ptr<Product>> products;
-    unsigned int products_per_iteration;
+    std::vector<unsigned int> products_indexes;
     public:
-        SupplierAddsProducts(Store& store, float probability, std::unique_ptr<Storekeeper>& store_keeper, std::vector<std::unique_ptr<Product>>& products);
+        SupplierAddsProducts(Store& store, unsigned int store_keeper_index, std::vector<unsigned int> products_indexes);
         virtual void perform_action() override;
-        virtual void restore() override;
-        virtual bool check_action() const override;
+        virtual void return_elements() override;
 };
 
 #endif

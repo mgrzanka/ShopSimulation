@@ -14,9 +14,10 @@ file(GLOB_RECURSE simulation CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Simu
 file(GLOB_RECURSE store CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Store/*")
 file(GLOB_RECURSE userinterface CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/UserInterface/*")
 file(GLOB_RECURSE structures CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Structures.*")
+file(GLOB_RECURSE receipt CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Receipt/*")
 
 add_library(Projekt ${client} ${employee} ${eventgenerator} ${filehandler}
-${product} ${randomevent} ${simulation} ${store} ${userinterface} ${structures})
+${product} ${randomevent} ${simulation} ${store} ${userinterface} ${structures} ${receipt})
 
 add_executable("main" "main.cpp")
 target_link_libraries("main" PUBLIC Projekt)

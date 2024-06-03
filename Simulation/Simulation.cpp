@@ -1,87 +1,131 @@
-// #include "Simulation.hpp"
-// #include <algorithm>
-// #include <chrono>
-// #include <memory>
-// #include <random>
-// #include <stdexcept>
-// #include <string>
-// #include <thread>
-// #include <vector>
+#include "Simulation.hpp"
+#include <chrono>
+#include <memory>
+#include <string>
+#include <random>
+#include <thread>
+#include <tuple>
+#include <utility>
+#include <vector>
 
 
+Day& operator++(Day& d) {
+    d = static_cast<Day>((static_cast<int>(d) + 1) % 7);
+    return d;
+}
 
-// Simulation::Simulation(unsigned int days, unsigned int starting_hour, StoreTime time_opened, std::string path_to_data_file):
-// days {days}, starting_hour {starting_hour}, file_handler{path_to_data_file}, store {}, simulation_interface{}
-// {
-//     iterations_opened = time_opened.get_iterations();
-//     time_opened.minutes = 24*60 - time_opened.minutes;
-//     iterations_closed = time_opened.get_iterations();
-//     minutes_per_iteration = time_opened.minutes_per_iteration;
+Simulation::Simulation(unsigned int days, unsigned int starting_hour, unsigned int ending_hour,
+Store& store, std::vector<float> probabilities):
+store{store}, simulation_interface{}
+{
+    this->number_of_days = days;
+    this->ending_hour = ending_hour;
+    this->starting_hour = starting_hour;
+    this->probabilities = probabilities;
 
-//     std::vector<std::unique_ptr<Client>> clients = file_handler.load_clients();
-//     std::vector<std::unique_ptr<Employee>> employees = file_handler.load_employees();
-//     std::vector<std::unique_ptr<Product>> products = file_handler.load_products();
-//     store.add_clients(clients);
-//     store.add_employees(employees);
-//     store.add_products(products);
-// }
+    this->iteration_counter = 0;
+    this->day_counter = 0;
+    this->day = Day::monday;
+}
 
-// std::string Simulation::get_hour(int i)
-// {
-//     unsigned int hour = starting_hour + int(i*minutes_per_iteration / 60);
-//     unsigned int minutes = i*minutes_per_iteration % 60;
-//     return std::to_string(hour) + ":" + std::to_string(minutes);
-// }
+std::string Simulation::day_to_string(int day) const
+{
+    const std::string WeekDays[] = {
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"};
+    return WeekDays[day];
+}
 
-// const Store& Simulation::get_store() const
-// {
-//     return store;
-// }
+std::string Simulation::get_hour(unsigned int i) const
+{
+    StoreTime temp_time_obj(1);
+    unsigned int minutes = temp_time_obj.get_minutes(i);
 
-// void Simulation::run()
-// {
-//     std::vector<std::unique_ptr<RandomEvent>> active_events; // inicialize active events on the begining
-//     for (int d=0; d<days; d++)
-//     {
-//         simulation_interface.print("Day "+std::to_string(d)+" has began :)\n");
-//         for (int i=0; i<iterations_opened; i++)
-//         {
-//             simulation_interface.print(":"+get_hour(i)+":");  // print current hour
+    unsigned int time_hours = (starting_hour + int(minutes/60)) % 24;
+    unsigned int time_minutes = minutes % 60;
 
-//             // Create a new event (uwaga, mozemy ddac ze w jakiejs iteracji nie bedzie zadnego eventu, ale to moze pozniej)
-//             std::unique_ptr<RandomEvent> event = std::move(store.draw_random_event());
-//             event->start_message();
-//             active_events.push_back(event);
+    return std::to_string(time_hours)+":"+std::to_string(time_minutes);
+}
 
-//             // Deal with active events
-//             for (const auto& active_event : active_events)
-//             {
-//                 if(active_event->check_action())
-//                 {
-//                     active_event->perform_action();
-//                 }
+bool Simulation::if_new_event() const
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 1);
 
-//                 if(active_event->get_counter() == 0)
-//                 {
-//                     active_event->end_message();
-//                     active_events.erase(std::remove(active_events.begin(), active_events.end(), active_event),
-//                     active_events.end());
-//                     active_event->restore();
-//                 }
+    return dis(gen) < 0.8;
+}
 
-//                 active_event->decrease_counter();
-//             }
-//             std::this_thread::sleep_for(std::chrono::seconds(3)); // sleep, so the user won't get epilepsy
-//         }
-//         // end message for each active event - remaining events didne't have enough time to be performed, so we ignore them
-//         for (const auto& active_event : active_events) active_event->end_message();
-//         active_events.clear();
+void Simulation::run()
+{
+    EventGenerator generator(store, probabilities);
+    std::unique_ptr<RandomEvent> event;
+    std::unique_ptr<RandomEvent> previous_event;
+    unsigned int daily_iterations = StoreTime(60*(ending_hour - starting_hour)).get_iterations();
+    unsigned int closed_iterations = StoreTime(60*24).get_iterations() - daily_iterations;
 
-//         // time when store is closed
-//         for(int i=0; i<iterations_closed; i++)
-//         {
-//             std::this_thread::sleep_for(std::chrono::seconds(3));
-//             simulation_interface.print(":"+get_hour(i)+": The store is closed");
-//         }
-//     }
-// }
+    while(day_counter <= number_of_days)
+    {
+        //first employee shifts
+        std::tuple<std::vector<int>,std::vector<int>> employees_tuple = store.check_employee_shift(int(day)+1, iteration_counter, starting_hour, ending_hour);
+        simulation_interface.print("Day "+std::to_string(day_counter+1)+": " + day_to_string(int(day))+"\n");
+        // DODAWANIE DOSTAWY
+
+        while(iteration_counter <= daily_iterations)
+        {
+            std::string hour = get_hour(iteration_counter);
+            simulation_interface.print(hour);
+            simulation_interface.print("\n");
+            Money store_money = store.get_money();
+            simulation_interface.print("Store has "+std::to_string(store_money.get_whole_part())+"."+std::to_string(store_money.get_cents())+store_money.currency_name+"\n");
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+
+            // displaying potential shift changes
+            for(int index : std::get<0>(employees_tuple)) store.get_on_break_employees()[index]->start_message();
+            for(int index : std::get<1>(employees_tuple)) store.get_on_shift_employees()[index]->end_message();
+            store.update_employees_shift(employees_tuple);
+
+            if(previous_event)
+            {
+                previous_event->perform_action();
+                previous_event->end_message();
+                previous_event->return_elements();
+                if (ClientBuysEvent* clientBuysEvent = dynamic_cast<ClientBuysEvent*>(previous_event.get()))
+                {
+                    std::this_thread::sleep_for(std::chrono::seconds(4));
+                }
+            }
+            // shift for the next iteration
+            employees_tuple = store.check_employee_shift(int(day)+1, iteration_counter+1, starting_hour, ending_hour);
+            std::vector<int> indexes = std::get<1>(employees_tuple);
+
+            event = generator.draw_event(indexes);
+            if(event)
+            {
+                event->start_message();
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+            previous_event = std::move(event);
+            iteration_counter++;
+            if(store.get_on_shift_employees().empty()) simulation_interface.print("No employees and avaible right now.\n");
+            else if(store.get_products().empty()) simulation_interface.print("Out of products!\n");
+        }
+
+        for(int i=0; i<closed_iterations; i++)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            simulation_interface.print(":"+get_hour(iteration_counter)+": The store is closed\n");
+            iteration_counter++;
+        }
+
+        if(int(day) <= 7) ++day;
+        else day = Day::monday;
+        day_counter++;
+        iteration_counter = 0;
+    }
+}

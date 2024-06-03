@@ -14,11 +14,10 @@ class MenagerGivesRise: public RandomEvent
     std::unique_ptr<Manager> menager;
     std::unique_ptr<Employee> employee;
     public:
-        MenagerGivesRise(Store& store, float probability, std::unique_ptr<Manager>& menager, std::unique_ptr<Employee>& employee);
+        MenagerGivesRise(Store& store, unsigned int menager_index, unsigned int employee_indx);
         virtual void end_message() const override;
         virtual void perform_action() override;
-        virtual void restore() override;
-        virtual bool check_action() const override;
+        virtual void return_elements() override;
 };
 
 #endif

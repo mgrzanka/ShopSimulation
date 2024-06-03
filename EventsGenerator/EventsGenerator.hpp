@@ -8,22 +8,29 @@
 #include "../RandomEvent/MenagerGivesRiseEvent.hpp"
 #include "../RandomEvent/SupplierAddsProductsEvent.hpp"
 #include <memory>
+#include <random>
 #include <vector>
 
 
 class EventGenerator
 {
     Store& store_reference;
-    std::vector<float> probabilities_of_events;  // dany jako input programu od uzytkownika
+    std::vector<float> probabilities_of_events;
     std::vector<int> events_indexes;
 
-    int draw_event_type(std::vector<int> exclude_indexes);
-    std::vector<std::unique_ptr<Product>> pick_products();
+    int draw_event_type(std::vector<int>& exclude_indexes) const;
+
+    std::unique_ptr<RandomEvent> draw_cleaner_cleans(std::vector<int> indexes);
+    std::unique_ptr<RandomEvent> draw_supplier_adds(std::vector<int> indexes);
+    std::unique_ptr<RandomEvent> draw_manager_gives_raise(std::vector<int> indexes);
+    std::unique_ptr<RandomEvent> draw_client_buys(std::vector<int> indexes);
+
+    std::vector<unsigned int> pick_products_indexes();
 
     public:
         EventGenerator(Store& store_reference,
                         std::vector<float> probabilities_of_events);
-        std::unique_ptr<RandomEvent> draw_event();
+        std::unique_ptr<RandomEvent> draw_event(std::vector<int> indexes);
 };
 
 #endif

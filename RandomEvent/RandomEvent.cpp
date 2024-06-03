@@ -1,28 +1,8 @@
 #include "RandomEvent.hpp"
+#include <memory>
 
 
-RandomEvent::RandomEvent(Store& store, float probability): store {store}, counter {1}, probability{probability} {} // domyślnie counter na 1 iteracja
-
-
-unsigned int RandomEvent::get_counter()
-{
-    return counter;
-}
-
-void RandomEvent::decrease_counter()
-{
-    counter -= 1;
-}
-
-float RandomEvent::get_probability()
-{
-    return probability;
-}
-
-bool RandomEvent::check_action() const
-{
-    return counter == 0;
-}
+RandomEvent::RandomEvent(Store& store): store {store} {} // domyślnie counter na 1 iteracja
 
 void RandomEvent::start_message() const {}
 

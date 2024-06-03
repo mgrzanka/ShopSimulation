@@ -1,6 +1,7 @@
 #ifndef STOREKEEPER_HPP
 #define STOREKEEPER_HPP
 #include "employee.hpp"
+#include <vector>
 
 class Storekeeper : public Employee
 {
@@ -10,8 +11,8 @@ class Storekeeper : public Employee
 
     StoreTime get_time_to_replenish();
     Money calculate_weekly_salary() const override;
-    void replenish_stock(std::string product_name);
-    void display_replenishing_message(std::string product_name);
+    void replenish_stock(std::string product_name);  // zostawic? ja nie uzywam
+    void display_replenishing_message(std::vector<std::string> names, Money sum);
 
     void start_message() const override;
     void end_message() const override;

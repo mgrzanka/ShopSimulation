@@ -46,6 +46,11 @@ bool operator<(Money& first, const Money& second)
     return first.full_price < second.full_price;
 }
 
+bool operator>(Money& first, const Money& second)
+{
+    return !(first < second);
+}
+
 Money operator*(const Money& first, int number)
 {
     unsigned int new_full_price = first.full_price * number;
@@ -58,10 +63,14 @@ Money operator+(const Money& first, const Money& second)
     return first.full_price + second.full_price;
 }
 
+bool Money::operator==(const Money& second) const
+{
+    return full_price == second.full_price;
+}
+
 // StoreTime structure
 StoreTime::StoreTime(unsigned int minutes)
 {
-    if(minutes == 0) throw std::invalid_argument("You can't spent 0 minutes in the store!");
     this->minutes = minutes;
 }
 
@@ -69,7 +78,37 @@ unsigned int StoreTime::get_iterations() const
 {
     return static_cast<unsigned int>(ceil(minutes/minutes_per_iteration));
 }
+unsigned int StoreTime::get_minutes(unsigned int iterations)
+{
+    return minutes_per_iteration * iterations;
+}
+
 std::ostream& operator<<(std::ostream& os, const StoreTime& time_spent)
 {
     return os<<time_spent.minutes<<" minutes";
+}
+
+StoreTime operator+(const StoreTime& first, const StoreTime& second)
+{
+    return StoreTime(first.minutes + second.minutes);
+}
+
+bool operator<(const StoreTime& first, const StoreTime& second)
+{
+    return first.minutes < second.minutes;
+}
+
+bool StoreTime::operator==(const StoreTime& second) const
+{
+    return this->minutes == second.minutes;
+}
+
+bool StoreTime::operator>=(const StoreTime& other) const
+{
+    return this->minutes > other.minutes || *this == other;
+}
+StoreTime operator-(const StoreTime& first, const StoreTime& second)
+{
+    if(first < second) throw std::invalid_argument("Negative number!");
+    return first.minutes - second.minutes;
 }

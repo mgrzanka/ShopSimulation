@@ -17,7 +17,7 @@ class Manager : public Employee
 
     // void give_rise(Employee& employee, const Money& rise); trzeba to robic z poziomu pracownika
     void interaction_while_giving_rise(std::string employee_name);
-    void display_rise_message(std::string employee_name);
+    void display_rise_message(std::string employee_name, Money sum);
 
     void start_message() const override;
     void end_message() const override;

@@ -1,39 +1,56 @@
 #include "MenagerGivesRiseEvent.hpp"
 #include "RandomEvent.hpp"
+#include <algorithm>
 #include <memory>
 #include <vector>
 
 
-MenagerGivesRise::MenagerGivesRise(Store& store, float probability, std::unique_ptr<Manager>& menager, std::unique_ptr<Employee>& employee):
-RandomEvent(store, probability)
+MenagerGivesRise::MenagerGivesRise(Store& store, unsigned int menager_index, unsigned int employee_indx):
+RandomEvent(store)
 {
-    this->menager = std::move(menager);
-    this->employee = std::move(employee);
-    this->counter = menager->get_time_promoting_employee().get_iterations();
+    Manager* manager = dynamic_cast<Manager*>(store.on_shift_occupied_employees[menager_index].get());
+    if(manager)
+    {
+        this->menager = std::make_unique<Manager>(*manager);
+    }
+    else throw std::invalid_argument("Something went wrong in event generator - this employee is not a menager!");
+
+    this->employee = std::move(store.on_shift_occupied_employees[employee_indx]);
+    store.on_shift_occupied_employees.erase(std::remove(store.on_shift_occupied_employees.begin(), store.on_shift_occupied_employees.end(),
+    nullptr), store.on_shift_occupied_employees.end());
 }
 
 void MenagerGivesRise::end_message() const
 {
-    menager->display_rise_message(employee->get_name());
+    menager->display_rise_message(employee->get_name(), employee->get_bonus());
 }
 
 void MenagerGivesRise::perform_action()
 {
-    if(counter != 0 && counter % 2 == 0) menager->praise_employee(employee->get_name());
-    else if (counter == 0)
+    menager->praise_employee(employee->get_name());
+    menager->interaction_while_giving_rise(employee->get_name());
+    employee->get_raise(employee->get_bonus());
+}
+
+void MenagerGivesRise::return_elements()
+{
+    auto& employees = store.on_shift_occupied_employees;
+
+    // Find the original manager pointer
+    auto original_manager_it = std::find_if(employees.begin(), employees.end(),
+        [&](const std::unique_ptr<Employee>& emp) {
+            Manager* manager_emp = dynamic_cast<Manager*>(emp.get());
+            return manager_emp &&
+                   manager_emp->calculate_hours_worked() == menager->calculate_hours_worked() &&
+                   manager_emp->calculate_weekly_salary() == menager->calculate_weekly_salary() &&
+                   manager_emp->get_name() == menager->get_name() &&
+                   manager_emp->get_bonus() == menager->get_bonus();
+        });
+    // Move the original manager back to on_shift_employees
+    if (original_manager_it != employees.end())
     {
-        menager->interaction_while_giving_rise(employee->get_name());
-        employee->get_raise(Money(50000)); // narazie zhardodowane, mozna pomyslec nad randomową ilością
+        store.on_shift_employees.push_back(std::move(*original_manager_it));
+        employees.erase(original_manager_it); // Erase the old pointer
     }
-}
-
-bool MenagerGivesRise::check_action() const
-{
-    return counter % 2 == 0;
-}
-
-void MenagerGivesRise::restore()
-{
-    std::vector<std::unique_ptr<Employee>> e; e.push_back(std::move(employee)); e.push_back(std::move(menager));
-    store.add_employees(e);
+    store.on_shift_employees.push_back(std::move(employee));
 }

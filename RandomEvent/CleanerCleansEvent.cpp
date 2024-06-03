@@ -1,24 +1,19 @@
 #include "CleanerCleansEvent.hpp"
 #include "RandomEvent.hpp"
+#include <algorithm>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 
-CleanerCleans::CleanerCleans(Store& store, float probability, std::unique_ptr<Cleaner>& cleaner):
-RandomEvent(store, probability)
+CleanerCleans::CleanerCleans(Store& store, unsigned int cleaner_index): RandomEvent(store)
 {
-    this->cleaner = std::move(cleaner);
-    this->counter = cleaner->get_time_on_cleaning().get_iterations();
-}
-
-void CleanerCleans::start_message() const
-{
-    cleaner->start_message();
-}
-
-void CleanerCleans::end_message() const
-{
-    cleaner->end_message();
+    Cleaner* cleaner = dynamic_cast<Cleaner*>(store.on_shift_occupied_employees[cleaner_index].get());
+    if(cleaner)
+    {
+        this->cleaner = std::make_unique<Cleaner>(*cleaner);
+    }
+    else throw std::invalid_argument("Something went wrong in event generator - this employee is not a cleaner!");
 }
 
 void CleanerCleans::perform_action()
@@ -26,8 +21,13 @@ void CleanerCleans::perform_action()
     cleaner->clean_shop();
 }
 
-void CleanerCleans::restore()
+void CleanerCleans::return_elements()
 {
-    std::vector<std::unique_ptr<Employee>> c; c.push_back(std::move(cleaner));
-    store.add_employees(c);
+    auto& employees = store.on_shift_occupied_employees;
+    auto original_pointer = std::find_if(employees.begin(), employees.end(), [&](const std::unique_ptr<Employee>& emp) {return
+    emp->calculate_hours_worked() == cleaner->calculate_hours_worked() && emp->calculate_weekly_salary() == cleaner->calculate_weekly_salary() &&
+    emp->get_name() == cleaner->get_name() && emp->get_bonus() == cleaner->get_bonus();});
+
+    store.on_shift_employees.push_back(std::move(*original_pointer));
+    store.on_shift_occupied_employees.erase(original_pointer);
 }

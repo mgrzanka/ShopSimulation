@@ -15,7 +15,6 @@ class Client
         std::string name;
         std::string vorname;
         Money money;
-        StoreTime time_spent;
         UserInterface client_interface;
 
         // protected, helping methods
@@ -23,13 +22,12 @@ class Client
         void display_buying_message(std::string employee_name, std::vector<std::string> product_names, const Money& product_price) const;
 
     public:
-        Client(std::string name, std::string vorname, Money money, StoreTime time_spent);
+        Client(std::string name, std::string vorname, Money money);
         virtual ~Client() = default;
 
         // getters and setters
         std::string get_name() const;
         Money get_money() const;
-        StoreTime get_storetime() const;
 
         void add_money(unsigned int amount);
         void take_money(unsigned int amount);
@@ -37,7 +35,7 @@ class Client
         // methods including client's iterraction with the store
         virtual void start_message() const = 0;
         virtual void end_message() const = 0;
-        // buy something gets employee pointer and product pointer, because they are defined in random event
+
         void buy_somethig(std::string employee_name, std::vector<std::string> product_name, const Money& product_price);
 };
 

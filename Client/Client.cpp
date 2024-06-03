@@ -18,13 +18,8 @@ Money Client::get_money() const
     return money;
 }
 
-StoreTime Client::get_storetime() const
-{
-    return time_spent;
-}
-
-Client::Client(std::string name, std::string vorname, Money money, StoreTime time_spent):
-money {money}, time_spent {time_spent}, client_interface {}
+Client::Client(std::string name, std::string vorname, Money money):
+money {money}, client_interface {}
 {
     if (name.empty() || vorname.empty()) throw std::invalid_argument("Empty name or vorname!");
     else
@@ -67,5 +62,5 @@ void Client::display_buying_message(std::string employee_name, std::vector<std::
 
 std::ostream& operator<<(std::ostream& os, const Client& client)
 {
-    return os<<"Client "<<client.get_name()<<" with budget "<<client.get_money()<<" that will spend "<<client.get_storetime()<< "iteration at the store.";
+    return os<<"Client "<<client.get_name()<<" with budget "<<client.get_money();
 }

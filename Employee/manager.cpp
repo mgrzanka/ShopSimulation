@@ -1,5 +1,6 @@
 #include "manager.hpp"
 #include <stdexcept>
+#include <string>
 
 Manager::Manager(std::string new_name, std::map<std::string, std::tuple<unsigned int, unsigned int>> new_weekly_schedule, Money new_bonus, Money new_base_hourly_wage, StoreTime time_promiting_employee):
 Employee{new_name, new_weekly_schedule, new_bonus, new_base_hourly_wage}, time_promoting_employee {time_promiting_employee}
@@ -13,6 +14,11 @@ Employee{new_name, new_weekly_schedule, new_bonus, new_base_hourly_wage}, time_p
             throw std::invalid_argument("Managers can work only between 9AM and 8PM.");
         }
 }
+}
+
+void Manager::praise_employee(std::string employee_name)
+{
+    employee_interface.print("Good job, "+employee_name+"!");
 }
 
 StoreTime Manager::get_time_promoting_employee()
@@ -38,9 +44,10 @@ void Manager::interaction_while_giving_rise(std::string employee_name)
 }
 
 
-void Manager::display_rise_message(std::string employee_name)
+void Manager::display_rise_message(std::string employee_name, Money sum)
 {
-    employee_interface.print("Manager " + this->get_name() +" gave" + employee_name + " a rise.\n");
+    employee_interface.print("Manager " + this->get_name() +" gave" + employee_name + " a rise of ");
+    employee_interface.print("("+std::to_string(sum.get_whole_part())+"."+std::to_string(sum.get_cents())+sum.currency_name+")\n");
 }
 
 void Manager::start_message() const

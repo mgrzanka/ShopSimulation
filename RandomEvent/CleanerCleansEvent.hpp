@@ -10,11 +10,9 @@ class CleanerCleans: public RandomEvent
 {
     std::unique_ptr<Cleaner> cleaner;
     public:
-        CleanerCleans(Store& store, float probability, std::unique_ptr<Cleaner>& cleaner);
-        virtual void start_message() const override;
-        virtual void end_message() const override;
+        CleanerCleans(Store& store, unsigned int cleaner_index);
         virtual void perform_action() override;
-        virtual void restore() override;
+        virtual void return_elements() override;
 };
 
 
