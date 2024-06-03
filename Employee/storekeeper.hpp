@@ -5,12 +5,11 @@
 
 class Storekeeper : public Employee
 {
-    StoreTime time_to_replenish;
     public:
     Storekeeper(std::string name, std::map<std::string, std::tuple<unsigned int, unsigned int>> weekly_schedule, Money bonus, Money base_hourly_wage);
 
     Money calculate_weekly_salary() const override;
-    void replenish_stock(std::string product_name);  // zostawic? ja nie uzywam
+    void replenish_stock(std::string product_name);  // zostawic? ja nie uzywam // wywal
     void display_replenishing_message(std::vector<std::string> names, Money sum);
 
     void start_message() const override;

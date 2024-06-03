@@ -5,14 +5,13 @@
 
 class Manager : public Employee
 {
-    StoreTime time_promoting_employee;
     public:
     Manager(std::string name, std::map<std::string, std::tuple<unsigned int, unsigned int>> weekly_schedule, Money bonus, Money base_hourly_wage);
 
     Money calculate_weekly_salary() const override;
     void praise_employee(std::string employee_name);
 
-    // void give_rise(Employee& employee, const Money& rise); trzeba to robic z poziomu pracownika
+    void give_rise(Employee& employee, const Money& rise);
     void interaction_while_giving_rise(std::string employee_name);
     void display_rise_message(std::string employee_name, Money sum);
 
