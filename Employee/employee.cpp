@@ -122,5 +122,5 @@ void Employee::get_raise(const Money& raise_money)
 
 std::ostream& operator<<(std::ostream& os, const Employee& client)
 {
-    return os<<"Employee "<<client.get_name(); //tu cos jeszcze dodam
+    return os<<"Employee "<<client.get_name();
 }

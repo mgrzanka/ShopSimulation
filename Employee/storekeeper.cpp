@@ -12,13 +12,6 @@ Money Storekeeper::calculate_weekly_salary() const
     return (base_hourly_wage + bonus + Money(8)) * calculate_hours_worked();
 }
 
-void Storekeeper::replenish_stock(std::string product_name)
-{
-    //tu będzie uzupełnienie sklepu
-    // display_replenishing_message(product_name);
-}
-
-
 void Storekeeper::display_replenishing_message(std::vector<std::string> names, Money sum)
 {
      employee_interface.print("Storekeeper " + this->get_name() + ": Those boxes are pretty heavy! I managed to replenish :");
