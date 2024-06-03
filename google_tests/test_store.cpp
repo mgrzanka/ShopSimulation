@@ -53,9 +53,9 @@ TEST(EventGenerator, EventGenerator)
     std::vector<std::unique_ptr<Product>> products; products.push_back(std::move(beverage1)); products.push_back(std::move(beverage2));
 
     std::unique_ptr<Cashier> cashier = std::make_unique<Cashier>("Cashier", new_weekly_schedule2, Money(12), Money(123));
-    std::unique_ptr<Cleaner> cleaner = std::make_unique<Cleaner>("Cleaner", new_weekly_schedule, Money(12), Money(12), StoreTime(10));
-    std::unique_ptr<Storekeeper> store_keeper = std::make_unique<Storekeeper>("Keeper", new_weekly_schedule2, Money(12), Money(12), StoreTime(10));
-    std::unique_ptr<Manager> manager = std::make_unique<Manager>("Manager", new_weekly_schedule, Money(12), Money(12), StoreTime(10));
+    std::unique_ptr<Cleaner> cleaner = std::make_unique<Cleaner>("Cleaner", new_weekly_schedule, Money(12), Money(10));
+    std::unique_ptr<Storekeeper> store_keeper = std::make_unique<Storekeeper>("Keeper", new_weekly_schedule2, Money(12), Money(10));
+    std::unique_ptr<Manager> manager = std::make_unique<Manager>("Manager", new_weekly_schedule, Money(12), Money(10));
     std::vector<std::unique_ptr<Employee>> employees; employees.push_back(std::move(store_keeper));
     employees.push_back(std::move(cashier)); employees.push_back(std::move(cleaner));
     employees.push_back(std::move(manager));

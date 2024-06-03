@@ -10,7 +10,7 @@
 #include <sstream>
 
 FileHandler::FileHandler(std::string path):
-path(path)
+path{path}
 {}
 
 std::vector<std::tuple<std::string, std::string>> FileHandler::load_names()

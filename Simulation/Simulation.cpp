@@ -1,4 +1,5 @@
 #include "Simulation.hpp"
+#include "../FileHandler/FileHandler.hpp"
 #include <chrono>
 #include <memory>
 #include <string>
@@ -122,7 +123,8 @@ void Simulation::run()
         std::tuple<std::vector<int>,std::vector<int>> employees_tuple = store.check_employee_shift(int(day)+1, iteration_counter, starting_hour, ending_hour);
         simulation_interface.print("Day "+std::to_string(day_counter+1)+": " + day_to_string(int(day))+"\n");
 
-        std::vector<std::unique_ptr<Product>> supply = generator.pick_new_products();
+        FileHandler file_handler("../products.txt");
+        std::vector<std::unique_ptr<Product>> supply = generator.pick_new_products(file_handler);
         first_supply(supply);
 
 
@@ -154,7 +156,7 @@ void Simulation::run()
             employees_tuple = store.check_employee_shift(int(day)+1, iteration_counter+1, starting_hour, ending_hour);
             std::vector<int> indexes = std::get<1>(employees_tuple);
 
-            event = generator.draw_event(indexes);
+            event = generator.draw_event(indexes, file_handler);
             if(event)
             {
                 event->start_message();

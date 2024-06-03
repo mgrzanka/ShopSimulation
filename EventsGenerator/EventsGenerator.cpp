@@ -51,7 +51,7 @@ int EventGenerator::draw_event_type(std::vector<int>& exclude_indexes) const
     return indexes_to_draw[random_index];
 }
 
-std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes)
+std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes, FileHandler& file_handler)
 {
     std::vector<int> excluded_indexes;
     std::unique_ptr<RandomEvent> event = nullptr;
@@ -71,7 +71,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes
         }
         else if(event_index == 1)
         {
-            event = draw_supplier_adds(indexes);
+            event = draw_supplier_adds(indexes, file_handler);
             if(!event)
             {
                 excluded_indexes.push_back(event_index);
@@ -130,11 +130,17 @@ std::vector<unsigned int> EventGenerator::pick_products_indexes()
 }
 
 
-std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products()
+std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products(FileHandler& file_handler)
 {
-    FileHandler file_handler("../products.txt");
     std::vector<std::unique_ptr<Product>> new_prod;
     std::vector<std::unique_ptr<Product>> all_prod = file_handler.load_products();
+
+// std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products()
+// {
+//     FileHandler file_handler("../products.txt");
+//     //FileHandler file_handler = FileHandler("../products.txt");
+//     std::vector<std::unique_ptr<Product>> new_prod;
+//     std::vector<std::unique_ptr<Product>> all_prod = file_handler.load_products();
 
     if (all_prod.empty()) {
         return new_prod;  // Zwraca pusty wektor, jeśli nie ma produktów
@@ -188,7 +194,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_cleaner_cleans(std::vector<int
     return std::make_unique<CleanerCleans>(store_reference, on_shift_occupied_index);  // do napisania cleaner cleans
 }
 
-std::unique_ptr<RandomEvent> EventGenerator::draw_supplier_adds(std::vector<int> indexes)
+std::unique_ptr<RandomEvent> EventGenerator::draw_supplier_adds(std::vector<int> indexes, FileHandler& file_handler)
 {
     int employee_indx = 0;
     std::vector<int> supplier_indexes;
@@ -203,7 +209,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_supplier_adds(std::vector<int>
         }
     }
     if(supplier_indexes.empty() || store_reference.products.empty()) return nullptr;
-    std::vector<std::unique_ptr<Product>> products_to_get = pick_new_products();
+    std::vector<std::unique_ptr<Product>> products_to_get = pick_new_products(file_handler);
 
     std::random_device rd;
     std::mt19937 gen(rd());

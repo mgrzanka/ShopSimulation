@@ -1,3 +1,5 @@
+#ifndef FILEHANDLER_HPP
+#define FILEHANDLER_HPP
 #include "../Product/Product.hpp"
 #include <memory>
 #include <vector>
@@ -13,3 +15,5 @@ class FileHandler
         std::vector<std::tuple<std::string, std::string>> load_names();
         std::vector<std::unique_ptr<Product>> load_products();
 };
+
+#endif

@@ -7,7 +7,8 @@ include(FetchContent)
 file(GLOB_RECURSE client CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Client/*")
 file(GLOB_RECURSE employee CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Employee/*")
 file(GLOB_RECURSE eventgenerator CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/EventsGenerator/*")
-file(GLOB_RECURSE filehandler CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/EventHandler/*")
+file(GLOB_RECURSE filehandler CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/FileHandler/*")
+file(GLOB_RECURSE eventhandler CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/EventHandler/*")
 file(GLOB_RECURSE product CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Product/*")
 file(GLOB_RECURSE randomevent CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/RandomEvent/*")
 file(GLOB_RECURSE simulation CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Simulation/*")
@@ -16,7 +17,7 @@ file(GLOB_RECURSE userinterface CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/U
 file(GLOB_RECURSE structures CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Structures.*")
 file(GLOB_RECURSE receipt CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Receipt/*")
 
-add_library(Projekt ${client} ${employee} ${eventgenerator} ${filehandler}
+add_library(Projekt ${client} ${employee} ${eventgenerator} ${filehandler} ${eventhandler}
 ${product} ${randomevent} ${simulation} ${store} ${userinterface} ${structures} ${receipt})
 
 add_executable("main" "main.cpp")
