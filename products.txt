@@ -1,0 +1,178 @@
+fruit_vegetable,orange,750,4
+fruit_vegetable,apple,260,2
+beverage,cola,630
+breadstuff,bread,300,50
+cosmetics,shampoo,1400,M
+dairy_product,milk,300,3.5
+industrial_article,nails,2000
+fruit_vegetable,banana,350,3
+fruit_vegetable,carrot,120,5
+beverage,apple juice,800
+breadstuff,baguette,250,55
+cosmetics,conditioner,1600,F
+dairy_product,cheese,450,7
+fruit_vegetable,strawberry,900,1
+fruit_vegetable,kiwi,400,3
+beverage,water,300
+breadstuff,bagel,200,60
+cosmetics,lotion,1200,F
+dairy_product,yogurt,200,4.5
+fruit_vegetable,grape,280,4
+fruit_vegetable,lettuce,150,1
+beverage,tea,700
+breadstuff,muffin,350,45
+cosmetics,soap,800,M
+dairy_product,cream,250,2
+industrial_article,washers,2200
+fruit_vegetable,peach,500,3
+fruit_vegetable,spinach,100,2
+beverage,coffee,1000
+breadstuff,croissant,300,65
+cosmetics,facewash,1100,M
+dairy_product,butter,350,1
+industrial_article,nuts,3000
+fruit_vegetable,blueberry,600,1
+fruit_vegetable,potato,200,4
+beverage,lemonade,650
+breadstuff,pita,400,50
+cosmetics,bodywash,1300,F
+dairy_product,kefir,300,5
+industrial_article,rivets,2700
+fruit_vegetable,cherry,450,2
+fruit_vegetable,cabbage,180,3
+beverage,smoothie,1200
+breadstuff,tortilla,220,70
+cosmetics,deodorant,900,M
+dairy_product,sour cream,400,6
+industrial_article,sandpaper,2400
+fruit_vegetable,plum,520,2
+fruit_vegetable,kale,300,1
+beverage,energy drink,1500
+breadstuff,ciabatta,280,60
+cosmetics,nail polish,700,F
+dairy_product,ice cream,500,4
+fruit_vegetable,pear,340,3
+fruit_vegetable,cucumber,170,1
+beverage,iced tea,800
+cosmetics,hair gel,1500,M
+dairy_product,cream cheese,350,5
+fruit_vegetable,watermelon,680,1
+fruit_vegetable,tomato,220,2
+beverage,milkshake,1200
+breadstuff,rye bread,300,50
+cosmetics,shaving cream,1000,M
+fruit_vegetable,avocado,900,2
+fruit_vegetable,bell pepper,300,2
+beverage,hot chocolate,1100
+breadstuff,biscuit,320,45
+cosmetics,body lotion,1400,F
+dairy_product,milk powder,380,7
+industrial_article,chains,2500
+fruit_vegetable,mango,480,2
+fruit_vegetable,zucchini,210,2
+beverage,tonic water,600
+breadstuff,scone,260,55
+cosmetics,lip balm,500,F
+dairy_product,paneer,350,6
+industrial_article,springs,2700
+fruit_vegetable,pomegranate,750,2
+fruit_vegetable,beetroot,200,3
+beverage,soda,700
+cosmetics,aftershave,1300,M
+dairy_product,whipped cream,280,3
+fruit_vegetable,pineapple,660,1
+fruit_vegetable,radish,180,3
+beverage,cider,900
+breadstuff,brioche,330,60
+cosmetics,moisturizer,1100,F
+dairy_product,ricotta,400,5
+industrial_article,cables,3000
+fruit_vegetable,fig,450,3
+fruit_vegetable,leek,160,2
+beverage,orange juice,700
+breadstuff,flatbread,280,55
+cosmetics,foundation,900,F
+dairy_product,cottage cheese,350,8
+industrial_article,pipes,3200
+fruit_vegetable,papaya,520,2
+fruit_vegetable,onion,130,3
+beverage,beer,800
+breadstuff,roll,220,60
+cosmetics,eyeliner,700,F
+dairy_product,quark,300,4
+fruit_vegetable,coconut,700,1
+fruit_vegetable,broccoli,240,3
+beverage,whiskey,1500
+breadstuff,donut,400,50
+cosmetics,mascara,800,F
+dairy_product,parmesan,500,7
+industrial_article,locks,2800
+fruit_vegetable,kiwano,900,2
+fruit_vegetable,brussels sprout,180,3
+beverage,rum,1300
+breadstuff,bun,210,45
+cosmetics,blush,600,F
+dairy_product,blue cheese,450,6
+industrial_article,bolts,2600
+fruit_vegetable,sweet potato,300,3
+beverage,vodka,1400
+breadstuff,focaccia,320,50
+cosmetics,lipstick,1000,F
+dairy_product,goat cheese,350,5
+industrial_article,screws,3100
+fruit_vegetable,lychee,350,2
+fruit_vegetable,celery,200,1
+beverage,wine,1600
+breadstuff,naan,280,60
+cosmetics,perfume,1500,F
+dairy_product,brie,300,4
+industrial_article,clamps,2700
+fruit_vegetable,passion fruit,480,2
+fruit_vegetable,artichoke,220,3
+beverage,gin,1300
+breadstuff,pumpernickel,360,40
+cosmetics,bronzer,700,F
+dairy_product,feta,250,5
+fruit_vegetable,apricot,500,2
+fruit_vegetable,cauliflower,260,1
+beverage,chocolate milk,900
+breadstuff,sourdough,330,45
+cosmetics,concealer,900,F
+dairy_product,mozzarella,280,6
+industrial_article,duct tape,2200
+fruit_vegetable,pomelo,550,2
+fruit_vegetable,turnip,180,3
+beverage,green tea,600
+breadstuff,french toast,300,60
+cosmetics,powder,800,F
+dairy_product,camembert,320,5
+industrial_article,rope,3100
+fruit_vegetable,guava,700,2
+fruit_vegetable,peas,200,100
+beverage,iced coffee,800
+breadstuff,pancake,240,55
+cosmetics,serum,1300,F
+dairy_product,gouda,370,4
+industrial_article,brushes,3300
+fruit_vegetable,nectarine,620,2
+fruit_vegetable,ginger,150,1
+beverage,roiboos,1000
+breadstuff,danish,280,60
+cosmetics,primer,900,F
+dairy_product,pecorino,300,6
+industrial_article,batteries,2700
+fruit_vegetable,elderberry,500,2
+beverage,espresso,700
+cosmetics,tanning lotion,1400,F
+dairy_product,cheddar,420,5
+industrial_article,fasteners,2500
+fruit_vegetable,pine nuts,400,20
+fruit_vegetable,mushroom,170,10
+beverage,ginger beer,1200
+cosmetics,sunscreen,1000,F
+industrial_article,hinges,2800
+fruit_vegetable,okra,190,3
+beverage,kombucha,900
+cosmetics,hair spray,1100,F
+dairy_product,mascarpone,330,4
+industrial_article,sockets,290
