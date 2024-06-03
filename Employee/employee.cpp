@@ -19,10 +19,6 @@ Employee::Employee(std::string new_name, std::map<std::string, std::tuple<unsign
     std::vector<std::string> week_days;
     week_days = {"mon", "tue", "wed", "thu", "fri", "sat", "sun"};
 
-    if (new_weekly_schedule.size() == 7) {
-            throw std::invalid_argument("Employee must have at least one day off during a week.");
-        }
-
     if (new_weekly_schedule.size() > 7) {
             throw std::invalid_argument("Incorrect schedule format.");
         }

@@ -2,6 +2,7 @@
 #define _CLIENT_HPP_
 #include <memory>
 #include <vector>
+#include <vector>
 
 
 #include "../Structures.hpp"
@@ -19,6 +20,7 @@ class Client
 
         // protected, helping methods
         virtual void interaction_while_paying(std::string employee_name) const; // it has default method, but can be overrided
+        void display_buying_message(std::string employee_name, std::vector<std::string> product_names, const Money& product_price) const;
         void display_buying_message(std::string employee_name, std::vector<std::string> product_names, const Money& product_price) const;
 
     public:

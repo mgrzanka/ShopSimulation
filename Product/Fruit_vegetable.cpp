@@ -1,4 +1,5 @@
 #include "Fruit_vegetable.hpp"
+#include "Fruit_vegetable.hpp"
 
 FruitVegetable::FruitVegetable(std::string name, Money price_netto, int amount_in_pack) :
 Product{name, price_netto},
@@ -12,6 +13,6 @@ int FruitVegetable::find_shelf() const
 
 Money FruitVegetable::calculate_price() const
 {
-    return Money(price_netto);
+    return price_netto;
 }
 

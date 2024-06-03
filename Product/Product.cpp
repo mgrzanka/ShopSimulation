@@ -21,7 +21,7 @@ std::string Product::get_name() const
 
 Money Product::get_price_netto() const
 {
-    return Money(price_netto);
+    return price_netto;
 }
 
 

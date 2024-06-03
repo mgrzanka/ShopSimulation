@@ -34,6 +34,12 @@ Money& operator+=(Money& first, const Money& second)
     first.full_price = new_full_price;
     return first;
 }
+Money& operator+=(Money& first, const Money& second)
+{
+    unsigned int new_full_price = first.full_price + second.full_price;
+    first.full_price = new_full_price;
+    return first;
+}
 
 Money operator+(Money& first, const Money& second)
 {
