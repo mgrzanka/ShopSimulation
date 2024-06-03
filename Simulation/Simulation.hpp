@@ -34,6 +34,7 @@ class Simulation
     public:
         Simulation(unsigned int days, unsigned int starting_hour, unsigned int ending_hour,
         Store& store, std::vector<float> probabilities);
+        void first_suply(std::vector<std::unique_ptr<Products>> supply);
         void run();
 };
 

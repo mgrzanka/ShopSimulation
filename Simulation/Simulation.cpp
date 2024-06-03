@@ -61,6 +61,23 @@ bool Simulation::if_new_event() const
     return dis(gen) < 0.8;
 }
 
+void Simulation::first_supply(std::vector<std::unique_ptr<Products>> supply)
+{
+    int products_in_iteration = supply.size();
+    std::vector<std::unique_ptr<Product>> to_add;
+    for(int j=0; j < products_in_iteration; j++)
+    {
+        if(Beverage* beverage = dynamic_cast<Beverage*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<Beverage>(*beverage));
+        else if(Breadstuff* bread = dynamic_cast<Breadstuff*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<Breadstuff>(*bread));
+        else if(Cosmetics* cosmetics = dynamic_cast<Cosmetics*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<Cosmetics>(*cosmetics));
+        else if(DairyProduct* dairyProduct = dynamic_cast<DairyProduct*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<DairyProduct>(*dairyProduct));
+        else if(FruitVegetable* fruitvegetable = dynamic_cast<FruitVegetable*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<FruitVegetable>(*fruitvegetable));
+        else if(IndustrialArticle* industrialarticle = dynamic_cast<IndustrialArticle*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<IndustrialArticle>(*industrialarticle));
+        else throw std::invalid_argument("Error while converting Product in SupplierAddsProduct.perform_action.");
+    }
+    store.add_products(to_add);
+}
+
 void Simulation::run()
 {
     EventGenerator generator(store, probabilities);
@@ -74,7 +91,10 @@ void Simulation::run()
         //first employee shifts
         std::tuple<std::vector<int>,std::vector<int>> employees_tuple = store.check_employee_shift(int(day)+1, iteration_counter, starting_hour, ending_hour);
         simulation_interface.print("Day "+std::to_string(day_counter+1)+": " + day_to_string(int(day))+"\n");
-        // DODAWANIE DOSTAWY
+
+        std::vector<std::unique_ptr<Product>> supply = generator.pick_new_products();
+        first_supply(supply);
+
 
         while(iteration_counter <= daily_iterations)
         {

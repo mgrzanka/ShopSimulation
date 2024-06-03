@@ -13,8 +13,8 @@
 #include <vector>
 
 
-SupplierAddsProducts::SupplierAddsProducts(Store& store, unsigned int store_keeper_index, std::vector<unsigned int> products_indexes):
-RandomEvent(store), products_indexes{products_indexes}
+SupplierAddsProducts::SupplierAddsProducts(Store& store, unsigned int store_keeper_index, std::vector<std::unique_ptr<Product>> products_to_add):
+RandomEvent(store), products_to_add{products_to_add}
 {
     Storekeeper* store_keeper = dynamic_cast<Storekeeper*>(store.on_shift_occupied_employees[store_keeper_index].get());
     if(store_keeper)
@@ -26,23 +26,23 @@ RandomEvent(store), products_indexes{products_indexes}
 
 void SupplierAddsProducts::perform_action()
 {
-    int products_in_iteration = products_indexes.size();
+    int products_in_iteration = products_to_add.size();
     std::vector<std::unique_ptr<Product>> to_add;
     Money sum;
     std::vector<std::string> products_names;
     for(int j=0; j < products_in_iteration; j++)
     {
-        Money price = store.products[products_indexes[j]]->get_price_netto();
+        Money price = store.products[products_to_add[j]]->get_price_netto();
         store.take_money_out(price);
         sum += price;
-        products_names.push_back(store.products[products_indexes[j]]->get_name());
+        products_names.push_back(store.products[products_to_add[j]]->get_name());
 
-        if(Beverage* beverage = dynamic_cast<Beverage*>(store.products[products_indexes[j]].get())) to_add.push_back(std::make_unique<Beverage>(*beverage));
-        else if(Breadstuff* bread = dynamic_cast<Breadstuff*>(store.products[products_indexes[j]].get())) to_add.push_back(std::make_unique<Breadstuff>(*bread));
-        else if(Cosmetics* cosmetics = dynamic_cast<Cosmetics*>(store.products[products_indexes[j]].get())) to_add.push_back(std::make_unique<Cosmetics>(*cosmetics));
-        else if(DairyProduct* dairyProduct = dynamic_cast<DairyProduct*>(store.products[products_indexes[j]].get())) to_add.push_back(std::make_unique<DairyProduct>(*dairyProduct));
-        else if(FruitVegetable* fruitvegetable = dynamic_cast<FruitVegetable*>(store.products[products_indexes[j]].get())) to_add.push_back(std::make_unique<FruitVegetable>(*fruitvegetable));
-        else if(IndustrialArticle* industrialarticle = dynamic_cast<IndustrialArticle*>(store.products[products_indexes[j]].get())) to_add.push_back(std::make_unique<IndustrialArticle>(*industrialarticle));
+        if(Beverage* beverage = dynamic_cast<Beverage*>(store.products[products_to_add[j]].get())) to_add.push_back(std::make_unique<Beverage>(*beverage));
+        else if(Breadstuff* bread = dynamic_cast<Breadstuff*>(store.products[products_to_add[j]].get())) to_add.push_back(std::make_unique<Breadstuff>(*bread));
+        else if(Cosmetics* cosmetics = dynamic_cast<Cosmetics*>(store.products[products_to_add[j]].get())) to_add.push_back(std::make_unique<Cosmetics>(*cosmetics));
+        else if(DairyProduct* dairyProduct = dynamic_cast<DairyProduct*>(store.products[products_to_add[j]].get())) to_add.push_back(std::make_unique<DairyProduct>(*dairyProduct));
+        else if(FruitVegetable* fruitvegetable = dynamic_cast<FruitVegetable*>(store.products[products_to_add[j]].get())) to_add.push_back(std::make_unique<FruitVegetable>(*fruitvegetable));
+        else if(IndustrialArticle* industrialarticle = dynamic_cast<IndustrialArticle*>(store.products[products_to_add[j]].get())) to_add.push_back(std::make_unique<IndustrialArticle>(*industrialarticle));
         else throw std::invalid_argument("Error while converting Product in SupplierAddsProduct.perform_action.");
     }
     store_keeper->display_replenishing_message(products_names, sum);
