@@ -33,6 +33,7 @@ class Simulation
     UserInterface simulation_interface;
     Store& store;
     std::vector<float> probabilities;
+    FileHandler& file_handler;
 
     std::string day_to_string(int day) const;
     std::string get_hour(unsigned int i) const;
@@ -40,8 +41,9 @@ class Simulation
 
     public:
         Simulation(unsigned int days, unsigned int starting_hour, unsigned int ending_hour,
-        Store& store, std::vector<float> probabilities);
+        Store& store, std::vector<float> probabilities, FileHandler& file_handler);
         void first_supply(std::vector<std::unique_ptr<Product>>& supply);
+        FileHandler& get_file_handler() const;
         void run();
 };
 

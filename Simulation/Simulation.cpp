@@ -16,8 +16,8 @@ Day& operator++(Day& d) {
 }
 
 Simulation::Simulation(unsigned int days, unsigned int starting_hour, unsigned int ending_hour,
-Store& store, std::vector<float> probabilities):
-store{store}, simulation_interface{}
+Store& store, std::vector<float> probabilities, FileHandler& file_handler):
+store{store}, simulation_interface{}, file_handler{file_handler}
 {
     this->number_of_days = days;
     this->ending_hour = ending_hour;
@@ -27,6 +27,11 @@ store{store}, simulation_interface{}
     this->iteration_counter = 0;
     this->day_counter = 0;
     this->day = Day::monday;
+}
+
+FileHandler& Simulation::get_file_handler() const
+{
+    return file_handler;
 }
 
 std::string Simulation::day_to_string(int day) const
@@ -123,8 +128,9 @@ void Simulation::run()
         std::tuple<std::vector<int>,std::vector<int>> employees_tuple = store.check_employee_shift(int(day)+1, iteration_counter, starting_hour, ending_hour);
         simulation_interface.print("Day "+std::to_string(day_counter+1)+": " + day_to_string(int(day))+"\n");
 
-        FileHandler file_handler("../products.txt");
-        std::vector<std::unique_ptr<Product>> supply = generator.pick_new_products(file_handler);
+        // FileHandler file_handler("../products.txt");
+        FileHandler& fh = get_file_handler();
+        std::vector<std::unique_ptr<Product>> supply = generator.pick_new_products(fh);
         first_supply(supply);
 
 
@@ -156,7 +162,7 @@ void Simulation::run()
             employees_tuple = store.check_employee_shift(int(day)+1, iteration_counter+1, starting_hour, ending_hour);
             std::vector<int> indexes = std::get<1>(employees_tuple);
 
-            event = generator.draw_event(indexes, file_handler);
+            event = generator.draw_event(indexes, fh);
             if(event)
             {
                 event->start_message();

@@ -14,7 +14,7 @@
 #include "../EventsGenerator/EventsGenerator.hpp"
 
 #include "../Simulation/Simulation.hpp"
-
+#include "../FileHandler/FileHandler.hpp"
 
 
 TEST(Store, Store)
@@ -71,8 +71,9 @@ TEST(EventGenerator, EventGenerator)
     Store real_store(products, clients, employees, Money(1234));
     std::vector<float> probabilities = {0.2, 0.3, 0.2, 0.3};
     EventGenerator event_generator(real_store, probabilities);
+    FileHandler file_handler("../products.txt");
 
-    Simulation simulation(2, 8, 20, real_store, probabilities);
+    Simulation simulation(2, 8, 20, real_store, probabilities, file_handler);
     simulation.run();
 
     // std::tuple<std::vector<int>,std::vector<int>> employees_tuple = real_store.check_employee_shift(1, 100, 8);
