@@ -11,6 +11,13 @@
 #include "../FileHandler/FileHandler.hpp"
 #include "../UserInterface/UserInterface.hpp"
 #include "../RandomEvent/RandomEvent.hpp"
+#include "../Product/Product.hpp"
+#include "../Product/Breadstuff.hpp"
+#include "../Product/Dairy_product.hpp"
+#include "../Product/Fruit_vegetable.hpp"
+#include "../Product/Cosmetics.hpp"
+#include "../Product/Beverage.hpp"
+#include "../Product/Industrial_article.hpp"
 
 enum class Day
 {
@@ -34,7 +41,7 @@ class Simulation
     public:
         Simulation(unsigned int days, unsigned int starting_hour, unsigned int ending_hour,
         Store& store, std::vector<float> probabilities);
-        void first_suply(std::vector<std::unique_ptr<Products>> supply);
+        void first_supply(std::vector<std::unique_ptr<Product>>& supply);
         void run();
 };
 

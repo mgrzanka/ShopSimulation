@@ -104,30 +104,30 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes
     return event;
 }
 
-// std::vector<unsigned int> EventGenerator::pick_products_indexes()
-// {
-//     std::vector<unsigned int> products_indexes;
+std::vector<unsigned int> EventGenerator::pick_products_indexes()
+{
+    std::vector<unsigned int> products_indexes;
 
-//     std::random_device rd;
-//     std::mt19937 gen(rd());
-//     std::uniform_int_distribution<> dis(1, store_reference.products.size());
-//     int number_of_products = dis(gen);
-//     Money total_price;
-//     Money current_money = store_reference.get_money();
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(1, store_reference.products.size());
+    int number_of_products = dis(gen);
+    Money total_price;
+    Money current_money = store_reference.get_money();
 
-//     for(int indx=0; indx < number_of_products; indx++)
-//     {
-//         int random_index = dis(gen)-1;
-//         Money money = total_price + store_reference.products[random_index]->get_price_netto();
-//         if(std::find(products_indexes.begin(), products_indexes.end(), random_index) == products_indexes.end() &&
-//         money < current_money)
-//         {
-//             products_indexes.push_back(random_index);
-//             total_price += money;
-//         }
-//     }
-//     return products_indexes;
-// }
+    for(int indx=0; indx < number_of_products; indx++)
+    {
+        int random_index = dis(gen)-1;
+        Money money = total_price + store_reference.products[random_index]->get_price_netto();
+        if(std::find(products_indexes.begin(), products_indexes.end(), random_index) == products_indexes.end() &&
+        money < current_money)
+        {
+            products_indexes.push_back(random_index);
+            total_price += money;
+        }
+    }
+    return products_indexes;
+}
 
 
 std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products()
@@ -203,7 +203,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_supplier_adds(std::vector<int>
         }
     }
     if(supplier_indexes.empty() || store_reference.products.empty()) return nullptr;
-    std::vector<std::unique_ptr<Product>>> products_to_get = pick_new_products();
+    std::vector<std::unique_ptr<Product>> products_to_get = pick_new_products();
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -214,7 +214,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_supplier_adds(std::vector<int>
     int on_shift_occupied_index = store_reference.on_shift_occupied_employees.size() - 1;
     std::erase(store_reference.on_shift_employees, store_reference.on_shift_employees[supplier_indexes[on_shift_index]]);
 
-    return std::make_unique<SupplierAddsProducts>(store_reference, on_shift_occupied_index, products_to_get);  // do napisania Random Event
+    return std::make_unique<SupplierAddsProducts>(store_reference, on_shift_occupied_index, products_to_get);
 }
 
 std::unique_ptr<RandomEvent> EventGenerator::draw_manager_gives_raise(std::vector<int> indexes)

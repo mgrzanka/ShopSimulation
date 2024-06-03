@@ -25,13 +25,14 @@ class EventGenerator
     std::unique_ptr<RandomEvent> draw_manager_gives_raise(std::vector<int> indexes);
     std::unique_ptr<RandomEvent> draw_client_buys(std::vector<int> indexes);
 
-    // std::vector<unsigned int> pick_products_indexes();
-    std::vector<std::unique_ptr<Product>> pick_new_products();
+    std::vector<unsigned int> pick_products_indexes();
+    // std::vector<std::unique_ptr<Product>> pick_new_products();
 
     public:
         EventGenerator(Store& store_reference,
                         std::vector<float> probabilities_of_events);
         std::unique_ptr<RandomEvent> draw_event(std::vector<int> indexes);
+    std::vector<std::unique_ptr<Product>> pick_new_products();
 };
 
 #endif

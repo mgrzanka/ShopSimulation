@@ -18,7 +18,7 @@ void Manager::praise_employee(std::string employee_name)
 void Manager::give_rise(Employee& employee, const Money& rise){
  interaction_while_giving_rise(employee.get_name());
  employee.set_bonus(employee.get_bonus() + rise);
- display_rise_message(employee.get_name());
+ display_rise_message(employee.get_name(), rise);
 }
 
 void Manager::interaction_while_giving_rise(std::string employee_name)

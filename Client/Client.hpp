@@ -21,7 +21,7 @@ class Client
         // protected, helping methods
         virtual void interaction_while_paying(std::string employee_name) const; // it has default method, but can be overrided
         void display_buying_message(std::string employee_name, std::vector<std::string> product_names, const Money& product_price) const;
-        void display_buying_message(std::string employee_name, std::vector<std::string> product_names, const Money& product_price) const;
+        // void display_buying_message(std::string employee_name, std::vector<std::string> product_names, const Money& product_price) const;
 
     public:
         Client(std::string name, std::string vorname, Money money);

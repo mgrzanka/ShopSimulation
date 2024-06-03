@@ -61,22 +61,52 @@ bool Simulation::if_new_event() const
     return dis(gen) < 0.8;
 }
 
-void Simulation::first_supply(std::vector<std::unique_ptr<Products>> supply)
+// void Simulation::first_supply(std::vector<std::unique_ptr<Product>> supply)
+// {
+//     int products_in_iteration = supply.size();
+//     std::vector<std::unique_ptr<Product>> to_add;
+//     for(int j=0; j < products_in_iteration; j++)
+//     {
+//         if(Beverage* beverage = dynamic_cast<Beverage*>(store.get_products()[supply[j]].get())) to_add.push_back(std::make_unique<Beverage>(*beverage));
+//         else if(Breadstuff* bread = dynamic_cast<Breadstuff*>(store.get_products()[supply[j]].get())) to_add.push_back(std::make_unique<Breadstuff>(*bread));
+//         else if(Cosmetics* cosmetics = dynamic_cast<Cosmetics*>(store.get_products()[supply[j]].get())) to_add.push_back(std::make_unique<Cosmetics>(*cosmetics));
+//         else if(DairyProduct* dairyProduct = dynamic_cast<DairyProduct*>(store.get_products()[supply[j]].get())) to_add.push_back(std::make_unique<DairyProduct>(*dairyProduct));
+//         else if(FruitVegetable* fruitvegetable = dynamic_cast<FruitVegetable*>(store.get_products()[supply[j]].get())) to_add.push_back(std::make_unique<FruitVegetable>(*fruitvegetable));
+//         else if(IndustrialArticle* industrialarticle = dynamic_cast<IndustrialArticle*>(store.get_products()[supply[j]].get())) to_add.push_back(std::make_unique<IndustrialArticle>(*industrialarticle));
+//         else throw std::invalid_argument("Error while converting Product in SupplierAddsProduct.perform_action.");
+//     }
+//     store.add_products(to_add);
+// }
+
+void Simulation::first_supply(std::vector<std::unique_ptr<Product>>& supply)
 {
     int products_in_iteration = supply.size();
     std::vector<std::unique_ptr<Product>> to_add;
-    for(int j=0; j < products_in_iteration; j++)
+    const auto& products = store.get_products();  // Pobierz stałą referencję do wektora produktów
+
+    for (int j = 0; j < products_in_iteration; j++)
     {
-        if(Beverage* beverage = dynamic_cast<Beverage*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<Beverage>(*beverage));
-        else if(Breadstuff* bread = dynamic_cast<Breadstuff*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<Breadstuff>(*bread));
-        else if(Cosmetics* cosmetics = dynamic_cast<Cosmetics*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<Cosmetics>(*cosmetics));
-        else if(DairyProduct* dairyProduct = dynamic_cast<DairyProduct*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<DairyProduct>(*dairyProduct));
-        else if(FruitVegetable* fruitvegetable = dynamic_cast<FruitVegetable*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<FruitVegetable>(*fruitvegetable));
-        else if(IndustrialArticle* industrialarticle = dynamic_cast<IndustrialArticle*>(store.products[supply[j]].get())) to_add.push_back(std::make_unique<IndustrialArticle>(*industrialarticle));
-        else throw std::invalid_argument("Error while converting Product in SupplierAddsProduct.perform_action.");
+        int product_index = j;
+
+        if (Beverage* beverage = dynamic_cast<Beverage*>(supply.at(product_index).get()))
+            to_add.push_back(std::make_unique<Beverage>(*beverage));
+        else if (Breadstuff* bread = dynamic_cast<Breadstuff*>(supply.at(product_index).get()))
+            to_add.push_back(std::make_unique<Breadstuff>(*bread));
+        else if (Cosmetics* cosmetics = dynamic_cast<Cosmetics*>(supply.at(product_index).get()))
+            to_add.push_back(std::make_unique<Cosmetics>(*cosmetics));
+        else if (DairyProduct* dairyProduct = dynamic_cast<DairyProduct*>(supply.at(product_index).get()))
+            to_add.push_back(std::make_unique<DairyProduct>(*dairyProduct));
+        else if (FruitVegetable* fruitvegetable = dynamic_cast<FruitVegetable*>(supply.at(product_index).get()))
+            to_add.push_back(std::make_unique<FruitVegetable>(*fruitvegetable));
+        else if (IndustrialArticle* industrialarticle = dynamic_cast<IndustrialArticle*>(supply.at(product_index).get()))
+            to_add.push_back(std::make_unique<IndustrialArticle>(*industrialarticle));
+        else
+            throw std::invalid_argument("Error while converting Product in SupplierAddsProduct.perform_action.");
     }
+
     store.add_products(to_add);
 }
+
 
 void Simulation::run()
 {
