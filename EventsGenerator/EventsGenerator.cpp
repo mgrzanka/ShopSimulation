@@ -130,10 +130,9 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes
 // }
 
 
-// trzeba dodać file handler jako argument pick_new_products()
-
 std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products()
 {
+    FileHandler file_handler("../products.txt");
     std::vector<std::unique_ptr<Product>> new_prod;
     std::vector<std::unique_ptr<Product>> all_prod = file_handler.load_products();
 
@@ -153,9 +152,6 @@ std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products()
     for (int i = 0; i < num_prod; ++i) {
         int index = dist_index(gen);
         new_prod.push_back(std::move(all_prod[index]));
-
-        // Opcjonalnie - usuwa produkt z all_prod żeby nie losować tego samego dwa razy
-        all_prod.erase(all_prod.begin() + index);
     }
 
     return new_prod;
