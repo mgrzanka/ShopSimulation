@@ -89,28 +89,28 @@ std::vector<std::unique_ptr<Employee>> PeopleParser::generate_employees()
 
     Money base_bonus = Money(5);
 
-    std::unique_ptr<Employee> cashier1 = std::make_unique<Cashier>(get_full_name(), morning_schedule, base_wage, base_bonus);
+    std::unique_ptr<Employee> cashier1 = std::make_unique<Cashier>(get_full_name(), morning_schedule, base_bonus, base_wage);
     employees.push_back(std::move(cashier1));
 
-    std::unique_ptr<Employee> cashier2 = std::make_unique<Cashier>(get_full_name(), afternoon_schedule, base_wage, base_bonus);
+    std::unique_ptr<Employee> cashier2 = std::make_unique<Cashier>(get_full_name(), afternoon_schedule, base_bonus, base_wage);
     employees.push_back(std::move(cashier2));
 
-    std::unique_ptr<Employee> cleaner1 = std::make_unique<Cleaner>(get_full_name(), morning_schedule, base_wage, base_bonus);
+    std::unique_ptr<Employee> cleaner1 = std::make_unique<Cleaner>(get_full_name(), morning_schedule, base_bonus, base_wage);
     employees.push_back(std::move(cleaner1));
 
-    std::unique_ptr<Employee> cleaner2 = std::make_unique<Cleaner>(get_full_name(), afternoon_schedule, base_wage, base_bonus);
+    std::unique_ptr<Employee> cleaner2 = std::make_unique<Cleaner>(get_full_name(), afternoon_schedule, base_bonus, base_wage);
     employees.push_back(std::move(cleaner2));
 
-     std::unique_ptr<Employee> manager1 = std::make_unique<Manager>(get_full_name(), morning_schedule, base_wage, base_bonus);
+     std::unique_ptr<Employee> manager1 = std::make_unique<Manager>(get_full_name(), morning_schedule, base_bonus, base_wage);
     employees.push_back(std::move(manager1));
 
-    std::unique_ptr<Employee> manager2 = std::make_unique<Manager>(get_full_name(), afternoon_schedule, base_wage, base_bonus);
+    std::unique_ptr<Employee> manager2 = std::make_unique<Manager>(get_full_name(), afternoon_schedule, base_bonus, base_wage);
     employees.push_back(std::move(manager2));
 
-     std::unique_ptr<Employee> storekeeper1 = std::make_unique<Storekeeper>(get_full_name(), morning_schedule, base_wage, base_bonus);
+     std::unique_ptr<Employee> storekeeper1 = std::make_unique<Storekeeper>(get_full_name(), morning_schedule, base_bonus, base_wage);
     employees.push_back(std::move(storekeeper1));
 
-    std::unique_ptr<Employee> storekeeper2 = std::make_unique<Storekeeper>(get_full_name(), afternoon_schedule, base_wage, base_bonus);
+    std::unique_ptr<Employee> storekeeper2 = std::make_unique<Storekeeper>(get_full_name(), afternoon_schedule, base_bonus, base_wage);
     employees.push_back(std::move(storekeeper2));
 
     return employees;
@@ -147,4 +147,4 @@ std::vector<std::unique_ptr<Client>> PeopleParser::generate_clients()
         return clients;
 
 
-}
+    }

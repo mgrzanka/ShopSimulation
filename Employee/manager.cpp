@@ -13,7 +13,7 @@ Money Manager::calculate_weekly_salary() const
 
 void Manager::praise_employee(std::string employee_name)
 {
-    employee_interface.print("Manager " + this->get_name() + ":" + employee_name + ", I'm really pleased with the work your're doing. Well done!\n");
+    employee_interface.print("Manager " + this->get_name() + ": " + employee_name + ", I'm really pleased with the work your're doing. Well done!\n");
 }
 void Manager::give_rise(Employee& employee, const Money& rise){
  interaction_while_giving_rise(employee.get_name());
@@ -23,13 +23,13 @@ void Manager::give_rise(Employee& employee, const Money& rise){
 
 void Manager::interaction_while_giving_rise(std::string employee_name)
 {
-    employee_interface.print("Manager " + this->get_name() + ":" + employee_name + ", you've been doing your job really well lately. I'm happy to raise your hourly wage.\n");
+    employee_interface.print("Manager " + this->get_name() + ": " + employee_name + ", you've been doing your job really well lately. I'm happy to raise your hourly wage.\n");
 }
 
 
 void Manager::display_rise_message(std::string employee_name, Money sum)
 {
-    employee_interface.print("Manager " + this->get_name() +" gave" + employee_name + " a rise of ");
+    employee_interface.print("Manager " + this->get_name() +" gave " + employee_name + " a rise of ");
     employee_interface.print("("+std::to_string(sum.get_whole_part())+"."+std::to_string(sum.get_cents())+sum.currency_name+")\n");
 }
 
