@@ -159,6 +159,7 @@ void Simulation::run()
                 if (ClientBuysEvent* clientBuysEvent = dynamic_cast<ClientBuysEvent*>(previous_event.get()))
                 {
                     std::this_thread::sleep_for(std::chrono::seconds(1)); // additional second for reading the receipt
+                    (void)clientBuysEvent;
                 }
             }
             // shift for the next iteration
@@ -185,7 +186,7 @@ void Simulation::run()
             exit(0);
         }
 
-        for(int i=0; i<closed_iterations; i++)
+        for(unsigned long int i=0; i<closed_iterations; i++)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
             simulation_interface.print(":"+get_hour(iteration_counter)+": The store is closed\n");

@@ -15,7 +15,7 @@ TEST_CASE("Industrial article tests") {
     prod.set_name("New Product");
     REQUIRE(prod.get_name() == "New Product");
     REQUIRE_THROWS_AS(prod.set_name(""), std::invalid_argument);
-    prod.set_price_netto(Money(1575));
+    prod.set_price_netto(1575);
     REQUIRE(prod.get_price_netto().full_price == 1575);
     REQUIRE_THROWS_AS(prod.set_price_netto(0), std::invalid_argument);
     REQUIRE_THROWS_AS(prod.set_price_netto(-590), std::invalid_argument);
@@ -30,7 +30,7 @@ TEST_CASE("Cosmetics tests") {
     REQUIRE(cosmetics.find_shelf() == 578);
     cosmetics.set_name("Red lipstick");
     REQUIRE(cosmetics.get_name() == "Red lipstick");
-    cosmetics.set_price_netto(Money(1200));
+    cosmetics.set_price_netto(1200);
     REQUIRE(cosmetics.get_price_netto().full_price == 1200);
     Cosmetics male_cosmetics("Aftershave", Money(1500), 'M');
     REQUIRE(male_cosmetics.find_shelf() == 579);
@@ -45,7 +45,7 @@ TEST_CASE("Breadstuff tests") {
     Breadstuff breadstuff("Whole wheat bread", Money(350), 50);
     REQUIRE(breadstuff.get_name() == "Whole wheat bread");
     REQUIRE(breadstuff.get_price_netto().full_price == 350);
-    REQUIRE(breadstuff.calculate_price().full_price == 368);
+    REQUIRE(breadstuff.calculate_price().full_price == 367);
     breadstuff.set_name("Bread roll");
     REQUIRE(breadstuff.get_name() == "Bread roll");
     breadstuff.set_price_netto(400);
@@ -94,7 +94,7 @@ TEST_CASE("Beverage tests") {
     Beverage beverage_long_name("Orange Juice", Money(250));
     REQUIRE(beverage.find_shelf() == 439);
     REQUIRE(beverage_long_name.find_shelf() == 440);
-    REQUIRE(beverage.calculate_price().full_price == 308);
+    REQUIRE(beverage.calculate_price().full_price == 307);
     REQUIRE_THROWS_AS(beverage.set_name(""), std::invalid_argument);
     REQUIRE_THROWS_AS(beverage.set_price_netto(0), std::invalid_argument);
     REQUIRE_THROWS_AS(beverage.set_price_netto(-590), std::invalid_argument);

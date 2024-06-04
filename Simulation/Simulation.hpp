@@ -30,8 +30,8 @@ class Simulation
 {
     unsigned int iteration_counter; unsigned int day_counter; Day day;
     unsigned int starting_hour; unsigned int ending_hour; unsigned int number_of_days;
-    UserInterface simulation_interface;
     Store& store;
+    UserInterface simulation_interface;
     std::vector<float> probabilities;
     FileHandler& file_handler;
 
