@@ -196,23 +196,28 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_cleaner_cleans(std::vector<int
 
     for (int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
     {
+        // protection from picking someone that is leaving
         if (std::find(indexes.begin(), indexes.end(), employee_indx) != indexes.end()) continue;
 
+        // getting idexes of cleaners
         auto& employee = store_reference.on_shift_employees[employee_indx];
         if (Cleaner* cleaner = dynamic_cast<Cleaner*>(employee.get()))
         {
             cleaner_indexes.push_back(employee_indx);
         }
     }
-    if(cleaner_indexes.empty()) return nullptr;
+    if(cleaner_indexes.empty()) return nullptr;  // if there is no cleaner, this event is not possible
 
+    // random index
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, cleaner_indexes.size()-1);
-
     int on_shift_index = dis(gen);
+
+    // change cleaner's status to occupied so he won't be picked again before he ends
     store_reference.on_shift_occupied_employees.push_back(std::move(store_reference.on_shift_employees[cleaner_indexes[on_shift_index]]));
     int on_shift_occupied_index = store_reference.on_shift_occupied_employees.size() - 1;
+    // erese null pointer to prevent picking it later from indexing
     std::erase(store_reference.on_shift_employees, store_reference.on_shift_employees[cleaner_indexes[on_shift_index]]);
 
     return std::make_unique<CleanerCleans>(store_reference, on_shift_occupied_index);  // do napisania cleaner cleans
@@ -224,22 +229,27 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_supplier_adds(std::vector<int>
     std::vector<int> supplier_indexes;
     for (int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
     {
+        // protection from picking someone that is leaving
         if (std::find(indexes.begin(), indexes.end(), employee_indx) != indexes.end()) continue;
 
+        // getting idexes of store keepers
         auto &employee = store_reference.on_shift_employees[employee_indx];
         if (Storekeeper* keeper = dynamic_cast<Storekeeper*>(employee.get()))
         {
             supplier_indexes.push_back(employee_indx);
         }
     }
+    // loading possible products for store keeper
     std::vector<std::unique_ptr<Product>> products_to_get = pick_new_products(file_handler);
     if(supplier_indexes.empty() || products_to_get.empty()) return nullptr;
 
+    // random index of store keeper
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, supplier_indexes.size()-1);
     int on_shift_index = dis(gen);
 
+    // put this store keeper to occupied employees and remove nullpointer
     store_reference.on_shift_occupied_employees.push_back(std::move(store_reference.on_shift_employees[supplier_indexes[on_shift_index]]));
     int on_shift_occupied_index = store_reference.on_shift_occupied_employees.size() - 1;
     std::erase(store_reference.on_shift_employees, store_reference.on_shift_employees[supplier_indexes[on_shift_index]]);
@@ -252,6 +262,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_manager_gives_raise(std::vecto
     int employee_indx = 0;
     std::vector<int> manager_indexes;
     std::vector<int> other_indexes;
+    // like in previous ones
     for (int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
     {
         if (std::find(indexes.begin(), indexes.end(), employee_indx) != indexes.end()) continue;
@@ -272,9 +283,11 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_manager_gives_raise(std::vecto
     int on_shift_index_manager = dis_manager(gen);
     int on_shift_index_other = dis_other(gen);
 
+    // protection from giving employee a rise with no budget in store
     Money clients_bonus(store_reference.on_shift_employees[other_indexes[on_shift_index_other]]->get_bonus());
     if(clients_bonus > store_reference.get_money()) return nullptr;
 
+    // relocate employee and menager to occupied
     store_reference.on_shift_occupied_employees.push_back(
         std::move(store_reference.on_shift_employees[manager_indexes[on_shift_index_manager]]));
     store_reference.on_shift_occupied_employees.push_back(
@@ -292,6 +305,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_client_buys(std::vector<int> i
 {
     int employee_indx = 0;
     std::vector<int> cashier_indexes;
+    // getting idexes of cashiers
     for (int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
     {
         if (std::find(indexes.begin(), indexes.end(), employee_indx) != indexes.end()) continue;
@@ -311,6 +325,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_client_buys(std::vector<int> i
     int on_shift_index_cashier = dis_cashier(gen);
     int available_client_index = dis_client(gen);
 
+    // pick products to buy with protection from taking to expensive for the client
     std::vector<unsigned int> products_indexes = pick_products_indexes(store_reference.available_clients[available_client_index]->get_money());
     std::vector<std::unique_ptr<Product>> products;
     for(int index : products_indexes)
@@ -321,6 +336,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_client_buys(std::vector<int> i
     nullptr), store_reference.products.end());
     if(products.empty()) return nullptr;
 
+    // relocate client to occupied (in store)
     store_reference.taken_clients.push_back(
         std::move(store_reference.available_clients[available_client_index]));
     store_reference.available_clients.erase(std::remove(store_reference.available_clients.begin(),
