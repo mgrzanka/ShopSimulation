@@ -13,6 +13,7 @@ class Tourist: public Client
         Tourist();
         void start_message() const override;
         void end_message() const override;
+        void add_money() override;
 };
 
 #endif

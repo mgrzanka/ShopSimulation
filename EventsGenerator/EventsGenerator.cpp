@@ -28,6 +28,7 @@ store_reference{store_reference}, probabilities_of_events{probabilities_of_event
 
 int EventGenerator::draw_event_type(std::vector<int>& exclude_indexes) const
 {
+    // inicialize random devise
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -37,6 +38,7 @@ int EventGenerator::draw_event_type(std::vector<int>& exclude_indexes) const
     float sum = 0.0;
     for (auto i : events_indexes)
     {
+        // if this type of event wan't excluded earlier (impossible to perform), add to draw chance
         if (std::find(exclude_indexes.begin(), exclude_indexes.end(), i) == exclude_indexes.end())
         {
             indexes_to_draw.push_back(i);
@@ -44,11 +46,11 @@ int EventGenerator::draw_event_type(std::vector<int>& exclude_indexes) const
             sum = sum + probabilities_of_events[i];
         }
     }
-    if(sum == 0) return -1;
+    if(sum == 0) return -1;  // if none of the events is possible
 
     std::discrete_distribution<> dis(probabilities_to_draw.begin(), probabilities_to_draw.end());
     int random_index = dis(gen);
-    return indexes_to_draw[random_index];
+    return indexes_to_draw[random_index];  // return random type of possible events
 }
 
 std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes, FileHandler& file_handler)
@@ -59,6 +61,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes
     while(excluded_indexes.size() < events_indexes.size())
     {
         int event_index = draw_event_type(excluded_indexes);
+        // Cleaner cleans event
         if(event_index == 0)
         {
             event = draw_cleaner_cleans(indexes);
@@ -69,6 +72,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes
             }
             break;
         }
+        // Storekeeper adds products event
         else if(event_index == 1)
         {
             event = draw_supplier_adds(indexes, file_handler);
@@ -79,6 +83,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes
             }
             break;
         }
+        // Menager gives rise event
         else if(event_index == 2)
         {
             event = draw_manager_gives_raise(indexes);
@@ -104,7 +109,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes
     return event;
 }
 
-std::vector<unsigned int> EventGenerator::pick_products_indexes()
+std::vector<unsigned int> EventGenerator::pick_products_indexes(Money max_price) const
 {
     std::vector<unsigned int> products_indexes;
 
@@ -113,38 +118,33 @@ std::vector<unsigned int> EventGenerator::pick_products_indexes()
     std::uniform_int_distribution<> dis(1, store_reference.products.size());
     int number_of_products = dis(gen);
     Money total_price;
-    Money current_money = store_reference.get_money();
 
     for(int indx=0; indx < number_of_products; indx++)
     {
         int random_index = dis(gen)-1;
-        Money money = total_price + store_reference.products[random_index]->get_price_netto();
+        Money money = total_price + store_reference.products[random_index]->calculate_price();
+        Money new_total_price = total_price + money;
+
         if(std::find(products_indexes.begin(), products_indexes.end(), random_index) == products_indexes.end() &&
-        money < current_money)
+        new_total_price < max_price)
         {
+            total_price = new_total_price;
             products_indexes.push_back(random_index);
-            total_price += money;
         }
     }
     return products_indexes;
 }
 
-
-std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products(FileHandler& file_handler)
+std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products(FileHandler& file_handler) const
 {
     std::vector<std::unique_ptr<Product>> new_prod;
     std::vector<std::unique_ptr<Product>> all_prod = file_handler.load_products();
 
-// std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products()
-// {
-//     FileHandler file_handler("../products.txt");
-//     //FileHandler file_handler = FileHandler("../products.txt");
-//     std::vector<std::unique_ptr<Product>> new_prod;
-//     std::vector<std::unique_ptr<Product>> all_prod = file_handler.load_products();
-
     if (all_prod.empty()) {
         return new_prod;  // Zwraca pusty wektor, jeśli nie ma produktów
     }
+    Money total_price;
+    Money current_money = store_reference.get_money();
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -155,17 +155,32 @@ std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products(FileHand
 
     std::uniform_int_distribution<> dist_index(0, all_prod.size() - 1);
 
-    for (int i = 0; i < num_prod; ++i) {
+    for (int i = 0; i < num_prod; ++i)
+    {
+        if (all_prod.empty()) {
+            break;
+        }
+
         int index = dist_index(gen);
-        new_prod.push_back(std::move(all_prod[index]));
+        Money product_price = all_prod[index]->calculate_price();
+        Money new_total_price = total_price + product_price;
+
+        if (new_total_price < current_money)
+        {
+            total_price = new_total_price;
+            new_prod.push_back(std::move(all_prod[index]));
+            all_prod.erase(all_prod.begin() + index);
+
+            if (!all_prod.empty()) {
+                dist_index = std::uniform_int_distribution<>(0, all_prod.size() - 1);
+            }
+        }
     }
 
     return new_prod;
 }
 
-
-
-std::unique_ptr<RandomEvent> EventGenerator::draw_cleaner_cleans(std::vector<int> indexes)
+std::unique_ptr<RandomEvent> EventGenerator::draw_cleaner_cleans(std::vector<int> indexes) const
 {
     int employee_indx = 0;
     std::vector<int> cleaner_indexes;
@@ -208,8 +223,8 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_supplier_adds(std::vector<int>
             supplier_indexes.push_back(employee_indx);
         }
     }
-    if(supplier_indexes.empty() || store_reference.products.empty()) return nullptr;
     std::vector<std::unique_ptr<Product>> products_to_get = pick_new_products(file_handler);
+    if(supplier_indexes.empty() || products_to_get.empty()) return nullptr;
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -280,25 +295,22 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_client_buys(std::vector<int> i
     }
     if(cashier_indexes.empty() || store_reference.available_clients.empty() || store_reference.products.empty()) return nullptr;
 
-    std::vector<unsigned int> products_indexes = pick_products_indexes();
-    Money total_sum;
-    std::vector<std::unique_ptr<Product>> products;
-    for(int index : products_indexes)
-    {
-        total_sum += store_reference.products[index]->get_price_netto();
-        if(total_sum > store_reference.get_money()) break;
-        products.push_back(std::move(store_reference.products[index]));
-    }
-    store_reference.products.erase(std::remove(store_reference.products.begin(), store_reference.products.end(),
-    nullptr), store_reference.products.end());
-    if(products.empty()) return nullptr;
-
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis_cashier(0, cashier_indexes.size()-1);
     std::uniform_int_distribution<> dis_client(0, store_reference.available_clients.size()-1);
     int on_shift_index_cashier = dis_cashier(gen);
     int available_client_index = dis_client(gen);
+
+    std::vector<unsigned int> products_indexes = pick_products_indexes(store_reference.available_clients[available_client_index]->get_money());
+    std::vector<std::unique_ptr<Product>> products;
+    for(int index : products_indexes)
+    {
+        products.push_back(std::move(store_reference.products[index]));
+    }
+    store_reference.products.erase(std::remove(store_reference.products.begin(), store_reference.products.end(),
+    nullptr), store_reference.products.end());
+    if(products.empty()) return nullptr;
 
     store_reference.taken_clients.push_back(
         std::move(store_reference.available_clients[available_client_index]));
@@ -308,5 +320,5 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_client_buys(std::vector<int> i
     return std::make_unique<ClientBuysEvent>(store_reference,
             store_reference.taken_clients.size() - 1,
             cashier_indexes[on_shift_index_cashier],
-            products);  // do napisania Random Event
+            products);
 }

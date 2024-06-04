@@ -115,8 +115,9 @@ std::vector<std::unique_ptr<Employee>> PeopleParser::generate_employees()
 
     return employees;
 }
-    std::vector<std::unique_ptr<Client>> PeopleParser::generate_clients()
-    {
+
+std::vector<std::unique_ptr<Client>> PeopleParser::generate_clients()
+{
         std::vector<std::unique_ptr<Client>> clients;
         std::unique_ptr<Client> client;
 
@@ -130,20 +131,20 @@ std::vector<std::unique_ptr<Employee>> PeopleParser::generate_employees()
         switch(random_int)
         {
             case 1:
-                client = std::make_unique<RegularClient>(get_random_name(), get_random_surname(), Money(100000), StoreTime(10));
+                client = std::make_unique<RegularClient>(get_random_name(), get_random_surname(), Money(100000));
                 clients.push_back(std::move(client));
                 break;
             case 2:
-                client = std::make_unique<Tourist>(get_random_name(), get_random_surname(), Money(1000000), StoreTime(30));
+                client = std::make_unique<Tourist>(get_random_name(), get_random_surname(), Money(1000000));
                 clients.push_back(std::move(client));
                 break;
             case 3:
-                client = std::make_unique<MenagersFriend>(get_random_name(), get_random_surname(), Money(10000), StoreTime(5));
+                client = std::make_unique<MenagersFriend>(get_random_name(), get_random_surname(), Money(10000));
                 clients.push_back(std::move(client));
                 break;
         }
         }
         return clients;
 
-        
-    }
+
+}

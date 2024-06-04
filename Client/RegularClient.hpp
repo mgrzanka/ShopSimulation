@@ -13,6 +13,7 @@ class RegularClient: public Client
         RegularClient();
         void start_message() const override;
         void end_message() const override;
+        void add_money() override;
 };
 
 #endif

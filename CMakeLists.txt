@@ -16,9 +16,10 @@ file(GLOB_RECURSE store CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Store/*")
 file(GLOB_RECURSE userinterface CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/UserInterface/*")
 file(GLOB_RECURSE structures CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Structures.*")
 file(GLOB_RECURSE receipt CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Receipt/*")
+file(GLOB_RECURSE parser CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/PeopleParser/*")
 
 add_library(Projekt ${client} ${employee} ${eventgenerator} ${filehandler} ${eventhandler}
-${product} ${randomevent} ${simulation} ${store} ${userinterface} ${structures} ${receipt})
+${product} ${randomevent} ${simulation} ${store} ${userinterface} ${structures} ${receipt} ${parser})
 
 add_executable("main" "main.cpp")
 target_link_libraries("main" PUBLIC Projekt)

@@ -21,3 +21,8 @@ void Tourist::end_message() const
 {
     client_interface.print("Tourist " + this->get_name() + " is going out of the store\n");
 }
+
+void Tourist::add_money()
+{
+    money.full_price += 500000;
+}

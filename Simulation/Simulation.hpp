@@ -42,30 +42,11 @@ class Simulation
     public:
         Simulation(unsigned int days, unsigned int starting_hour, unsigned int ending_hour,
         Store& store, std::vector<float> probabilities, FileHandler& file_handler);
-        void first_supply(std::vector<std::unique_ptr<Product>>& supply);
+        void add_first_supply(std::vector<std::unique_ptr<Product>>& supply);
         FileHandler& get_file_handler() const;
         void run();
 };
 
 
-// class Simulation
-// {
-//     unsigned int iterations_opened;
-//     unsigned int iterations_closed;
-//     unsigned int minutes_per_iteration;
-//     unsigned int starting_hour;
-//     unsigned int days;
-
-//     Store store;
-//     FileHandler file_handler;
-//     UserInterface simulation_interface;
-
-//     std::string get_hour(int i);
-
-//     public:
-//         const Store& get_store() const;
-//         Simulation(unsigned int days, unsigned int starting_hour, StoreTime hours_per_day, std::string path_to_data_file);
-//         void run();
-// };
 
 #endif

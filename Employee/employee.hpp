@@ -11,7 +11,7 @@
 class Employee
 {
     protected:
-   std::string name;
+    std::string name;
     std::map<std::string, std::tuple<unsigned int, unsigned int>> weekly_schedule;
     Money base_hourly_wage;
     Money bonus;
@@ -21,7 +21,7 @@ class Employee
     Employee(std::string new_name, std::map<std::string, std::tuple<unsigned int,  unsigned int>> new_weekly_schedule, Money new_bonus, Money new_base_hourly_wage);
 
     //getters and setters
-   std::string get_name() const;
+    std::string get_name() const;
     Money get_base_hourly_wage() const;
     std::map<std::string, std::tuple<unsigned int, unsigned int>> get_weekly_schedule() const;
     Money get_bonus() const;

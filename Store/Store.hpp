@@ -13,21 +13,24 @@
 
 class Store
 {
-    protected:
-        Money money;
-        std::vector<std::unique_ptr<Product>> products;
+    Money money;
+    std::vector<std::unique_ptr<Product>> products;
 
-        std::vector<std::unique_ptr<Client>> taken_clients;
-        std::vector<std::unique_ptr<Client>> available_clients;
+    std::vector<std::unique_ptr<Client>> taken_clients;
+    std::vector<std::unique_ptr<Client>> available_clients;
 
-        std::vector<std::unique_ptr<Employee>> on_shift_employees;
-        std::vector<std::unique_ptr<Employee>> on_shift_occupied_employees;
-        std::vector<std::unique_ptr<Employee>> on_break_employees;
+    std::vector<std::unique_ptr<Employee>> on_shift_employees;
+    std::vector<std::unique_ptr<Employee>> on_shift_occupied_employees;
+    std::vector<std::unique_ptr<Employee>> on_break_employees;
+
     public:
         Store(std::vector<std::unique_ptr<Product>>& products,
                 std::vector<std::unique_ptr<Client>>& clients,
                 std::vector<std::unique_ptr<Employee>>& employees,
-                Money money);
+                Money money);  // constructor for testing
+        Store(std::vector<std::unique_ptr<Client>>& clients,
+                std::vector<std::unique_ptr<Employee>>& employees,
+                Money money);  // this one used in programm
         Store() = default;
 
         const std::vector<std::unique_ptr<Product>>& get_products() const;
@@ -40,6 +43,7 @@ class Store
 
         void add_money(Money added_money);
         void take_money_out(Money taken_money);
+        void pay_employees();
 
         void add_products(std::vector<std::unique_ptr<Product>>& new_products);
         void add_clients(std::vector<std::unique_ptr<Client>>& new_clients);

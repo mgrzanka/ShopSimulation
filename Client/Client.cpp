@@ -47,11 +47,6 @@ void Client::take_money(unsigned int amount)
     money.full_price = money.full_price - amount;
 }
 
-void Client::add_money(unsigned int amount)
-{
-    money.full_price = money.full_price + amount;
-}
-
 void Client::display_buying_message(std::string employee_name, std::vector<std::string> product_names, const Money& product_price) const
 {
     client_interface.print(this->get_name() + " is buing ");

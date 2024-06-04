@@ -50,6 +50,8 @@ std::vector<std::unique_ptr<Product>> FileHandler::load_products()
         std::cerr << "Could not open the file!" << std::endl;
     }
 
+    file.clear();
+    file.seekg(0, std::ios::beg);
 
     while (std::getline(file, line)) {
         std::istringstream iss(line);

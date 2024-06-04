@@ -20,3 +20,8 @@ void RegularClient::end_message() const
 {
     client_interface.print("Regular client " + this->get_name() + " is going out of the store\n");
 }
+
+void RegularClient::add_money()
+{
+    money.full_price += 20000;
+}

@@ -12,6 +12,7 @@
 #include "../RandomEvent/CleanerCleansEvent.hpp"
 #include "../RandomEvent/ClientBuysEvent.hpp"
 #include "../EventsGenerator/EventsGenerator.hpp"
+#include "../PeopleParser/PeopleParser.hpp"
 
 #include "../Simulation/Simulation.hpp"
 #include "../FileHandler/FileHandler.hpp"
@@ -28,20 +29,18 @@ TEST(Store, Store)
     auto& products = store.get_products();
 }
 
-
 TEST(EventGenerator, EventGenerator)
 {
     std::map<std::string, std::tuple<unsigned int, unsigned int>> new_weekly_schedule;
-    new_weekly_schedule["mon"] = std::make_tuple(9, 10);
+    new_weekly_schedule["mon"] = std::make_tuple(9, 20);
     std::map<std::string, std::tuple<unsigned int, unsigned int>> new_weekly_schedule2;
-    new_weekly_schedule2["mon"] = std::make_tuple(9, 10);
+    new_weekly_schedule2["mon"] = std::make_tuple(9, 21);
     new_weekly_schedule2["tue"] = std::make_tuple(8, 14);
     new_weekly_schedule2["wed"] = std::make_tuple(14, 20);
     new_weekly_schedule2["thu"] = std::make_tuple(14, 20);
     new_weekly_schedule2["fri"] = std::make_tuple(8, 14);
     // new_weekly_schedule2["sat"] = std::make_tuple(14, 20);
     // new_weekly_schedule2["sun"] = std::make_tuple(14, 20);
-
 
     // Creating store
     std::unique_ptr<Client> client1 = std::make_unique<RegularClient>("M", "G", Money(100000000));
@@ -66,29 +65,31 @@ TEST(EventGenerator, EventGenerator)
     // store.take_money_out(Money(12));
     // EXPECT_EQ(store.get_money(), Money(1300));
 
+    PeopleParser people_parser("/home/gosia/PROI/proi_24l_101_projekt/names.txt");
+    std::vector<std::unique_ptr<Client>> xclients = people_parser.generate_clients();
+    std::vector<std::unique_ptr<Employee>> xemployees = people_parser.generate_employees();
 
     // Powazniejszy test
-    Store real_store(products, clients, employees, Money(1234));
-    std::vector<float> probabilities = {0.2, 0.3, 0.2, 0.3};
+    Store real_store(products, clients, employees, Money(12000000));
+    std::vector<float> probabilities = {0.1, 0.4, 0.1, 0.4};
     EventGenerator event_generator(real_store, probabilities);
-    FileHandler file_handler("../products.txt");
+    FileHandler file_handler("/home/gosia/PROI/proi_24l_101_projekt/products.txt");
 
     Simulation simulation(2, 8, 20, real_store, probabilities, file_handler);
     simulation.run();
 
-    // std::tuple<std::vector<int>,std::vector<int>> employees_tuple = real_store.check_employee_shift(1, 100, 8);
+    // std::tuple<std::vector<int>,std::vector<int>> employees_tuple = real_store.check_employee_shift(1, 100, 8, 20);
+    // real_store.update_employees_shift(employees_tuple);
     // std::vector<int> indexes = std::get<1>(employees_tuple);
     // real_store.update_employees_shift(employees_tuple);
 
-    // auto event = std::move(event_generator.draw_event(indexes));
+    // auto event = std::move(event_generator.draw_event(indexes, file_handler));
 
     // if(event)
     // {
     //     event->start_message();
     //     event->perform_action();
-    //     event->decrease_counter();
     //     event->end_message();
-    //     event->check_action();
     //     event->return_elements();
     // }
 
@@ -146,4 +147,5 @@ TEST(EventGenerator, EventGenerator)
     //     event6->check_action();
     //     event6->return_elements();
     // }
+
 }

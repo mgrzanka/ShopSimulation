@@ -23,6 +23,15 @@ Store::Store(std::vector<std::unique_ptr<Product>>& products,
     this->money = money;
 }
 
+Store::Store(std::vector<std::unique_ptr<Client>>& clients,
+                std::vector<std::unique_ptr<Employee>>& employees,
+                Money money)
+{
+    this->add_clients(clients);
+    this->add_employees(employees);
+    this->money = money;
+}
+
 const std::vector<std::unique_ptr<Product>>& Store::get_products() const
 {
     return products;
@@ -83,7 +92,10 @@ void Store::add_employees(std::vector<std::unique_ptr<Employee>>& new_employees)
 
 void Store::take_money_out(Money to_take)
 {
-    if(to_take.full_price > money.full_price) throw std::invalid_argument("To expensive!");
+    if(to_take.full_price > money.full_price)
+    {
+        throw std::invalid_argument("To expensive!");
+    }
     money -= to_take;
 }
 
@@ -141,4 +153,14 @@ void Store::update_employees_shift(std::tuple<std::vector<int>,std::vector<int>>
     on_break_employees.erase(std::remove(on_break_employees.begin(), on_break_employees.end(), nullptr), on_break_employees.end());
     for(auto employee_indx : currently_active) on_break_employees.push_back(std::move(on_shift_employees[employee_indx]));
     for(auto employee_indx : currently_active) on_shift_employees.erase(on_shift_employees.begin() + employee_indx);
+}
+
+void Store::pay_employees()
+{
+    for(auto& employee : on_break_employees)
+    {
+        Money to_take = employee->get_base_hourly_wage();
+        if(to_take > money) throw (std::invalid_argument("Not enough money to pay the employee!"));
+        take_money_out(employee->get_base_hourly_wage());
+    }
 }

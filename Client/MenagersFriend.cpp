@@ -20,3 +20,8 @@ void MenagersFriend::end_message() const
 {
     client_interface.print("Menager's friend " + this->get_name() + " is going out of the store\n");
 }
+
+void MenagersFriend::add_money()
+{
+    money.full_price += 100000;
+}

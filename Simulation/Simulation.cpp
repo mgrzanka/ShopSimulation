@@ -1,7 +1,9 @@
 #include "Simulation.hpp"
 #include "../FileHandler/FileHandler.hpp"
 #include <chrono>
+#include <cstdlib>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <random>
 #include <thread>
@@ -84,11 +86,11 @@ bool Simulation::if_new_event() const
 //     store.add_products(to_add);
 // }
 
-void Simulation::first_supply(std::vector<std::unique_ptr<Product>>& supply)
+void Simulation::add_first_supply(std::vector<std::unique_ptr<Product>>& supply)
 {
     int products_in_iteration = supply.size();
     std::vector<std::unique_ptr<Product>> to_add;
-    const auto& products = store.get_products();  // Pobierz stałą referencję do wektora produktów
+    //const auto& products = store.get_products();  // Pobierz stałą referencję do wektora produktów
 
     for (int j = 0; j < products_in_iteration; j++)
     {
@@ -128,11 +130,9 @@ void Simulation::run()
         std::tuple<std::vector<int>,std::vector<int>> employees_tuple = store.check_employee_shift(int(day)+1, iteration_counter, starting_hour, ending_hour);
         simulation_interface.print("Day "+std::to_string(day_counter+1)+": " + day_to_string(int(day))+"\n");
 
-        // FileHandler file_handler("../products.txt");
-        FileHandler& fh = get_file_handler();
-        std::vector<std::unique_ptr<Product>> supply = generator.pick_new_products(fh);
-        first_supply(supply);
-
+        std::vector<std::unique_ptr<Product>> supply = generator.pick_new_products(file_handler);
+        add_first_supply(supply);
+        for(const auto& client : store.get_available_clients()) client->add_money();
 
         while(iteration_counter <= daily_iterations)
         {
@@ -162,7 +162,7 @@ void Simulation::run()
             employees_tuple = store.check_employee_shift(int(day)+1, iteration_counter+1, starting_hour, ending_hour);
             std::vector<int> indexes = std::get<1>(employees_tuple);
 
-            event = generator.draw_event(indexes, fh);
+            event = generator.draw_event(indexes, file_handler);
             if(event)
             {
                 event->start_message();
@@ -170,8 +170,17 @@ void Simulation::run()
             }
             previous_event = std::move(event);
             iteration_counter++;
-            if(store.get_on_shift_employees().empty()) simulation_interface.print("No employees and avaible right now.\n");
+            if(store.get_on_shift_employees().empty()) simulation_interface.print("No employees are avaible right now.\n");
             else if(store.get_products().empty()) simulation_interface.print("Out of products!\n");
+        }
+
+        try
+        {
+            store.pay_employees();
+        }catch(const std::invalid_argument& e)
+        {
+            simulation_interface.print("This store went out of business because of employee reporting it for not paying enough money :O. Try your bussiness again.\n");
+            exit(0);
         }
 
         for(int i=0; i<closed_iterations; i++)
@@ -180,7 +189,6 @@ void Simulation::run()
             simulation_interface.print(":"+get_hour(iteration_counter)+": The store is closed\n");
             iteration_counter++;
         }
-
         if(int(day) <= 7) ++day;
         else day = Day::monday;
         day_counter++;
