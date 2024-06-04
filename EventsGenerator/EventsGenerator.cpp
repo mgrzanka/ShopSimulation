@@ -55,6 +55,7 @@ int EventGenerator::draw_event_type(std::vector<int>& exclude_indexes) const
 
 std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes, FileHandler& file_handler)
 {
+    // indexes is a vector of indexes of employees that will leave in next hour and can't start another activity
     std::vector<int> excluded_indexes;
     std::unique_ptr<RandomEvent> event = nullptr;
 
@@ -94,6 +95,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes
             }
             break;
         }
+        // client buys event
         else if(event_index == 3)
         {
             event = draw_client_buys(indexes);
@@ -111,20 +113,25 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_event(std::vector<int> indexes
 
 std::vector<unsigned int> EventGenerator::pick_products_indexes(Money max_price) const
 {
+    // method for client buys - returns just indexes
     std::vector<unsigned int> products_indexes;
 
+    //inicialization
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(1, store_reference.products.size());
+
     int number_of_products = dis(gen);
     Money total_price;
 
     for(int indx=0; indx < number_of_products; indx++)
     {
+        // draw index
         int random_index = dis(gen)-1;
         Money money = total_price + store_reference.products[random_index]->calculate_price();
         Money new_total_price = total_price + money;
 
+        // protection from picking leaving employee and product with too much cost
         if(std::find(products_indexes.begin(), products_indexes.end(), random_index) == products_indexes.end() &&
         new_total_price < max_price)
         {
@@ -137,6 +144,7 @@ std::vector<unsigned int> EventGenerator::pick_products_indexes(Money max_price)
 
 std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products(FileHandler& file_handler) const
 {
+    // load products that store keeper can (possibly) add
     std::vector<std::unique_ptr<Product>> new_prod;
     std::vector<std::unique_ptr<Product>> all_prod = file_handler.load_products();
 
@@ -149,12 +157,13 @@ std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products(FileHand
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    // Losowanie ilości produktów (od 20 do 30)
+    //Drawing number of products
     std::uniform_int_distribution<> dist_count(20, 30);
     int num_prod = dist_count(gen);
 
     std::uniform_int_distribution<> dist_index(0, all_prod.size() - 1);
 
+    // for each single product, draw index from all possible products (loaded earlier)
     for (int i = 0; i < num_prod; ++i)
     {
         if (all_prod.empty()) {
@@ -165,13 +174,13 @@ std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products(FileHand
         Money product_price = all_prod[index]->calculate_price();
         Money new_total_price = total_price + product_price;
 
-        if (new_total_price < current_money)
+        if (new_total_price < current_money)  // protection from taking products that are more expensive than store has money
         {
             total_price = new_total_price;
-            new_prod.push_back(std::move(all_prod[index]));
+            new_prod.push_back(std::move(all_prod[index])); // move products to all products vector are remove remaining null pointer
             all_prod.erase(all_prod.begin() + index);
 
-            if (!all_prod.empty()) {
+            if (!all_prod.empty()) {  // end of possible products
                 dist_index = std::uniform_int_distribution<>(0, all_prod.size() - 1);
             }
         }

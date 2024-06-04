@@ -151,11 +151,12 @@ void Simulation::run()
             if(previous_event)
             {
                 previous_event->perform_action();
+                std::this_thread::sleep_for(std::chrono::seconds(3));
                 previous_event->end_message();
                 previous_event->return_elements();
                 if (ClientBuysEvent* clientBuysEvent = dynamic_cast<ClientBuysEvent*>(previous_event.get()))
                 {
-                    std::this_thread::sleep_for(std::chrono::seconds(4));
+                    std::this_thread::sleep_for(std::chrono::seconds(1)); // additional second for reading the receipt
                 }
             }
             // shift for the next iteration
@@ -163,15 +164,14 @@ void Simulation::run()
             std::vector<int> indexes = std::get<1>(employees_tuple);
 
             event = generator.draw_event(indexes, file_handler);
-            if(event)
-            {
-                event->start_message();
-                std::this_thread::sleep_for(std::chrono::seconds(1));
-            }
+            if(event) event->start_message();
             previous_event = std::move(event);
+
             iteration_counter++;
             if(store.get_on_shift_employees().empty()) simulation_interface.print("No employees are avaible right now.\n");
             else if(store.get_products().empty()) simulation_interface.print("Out of products!\n");
+
+            std::this_thread::sleep_for(std::chrono::seconds(3));
         }
 
         try
