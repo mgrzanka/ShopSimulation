@@ -30,6 +30,7 @@ int main(int argc, char* argv[]) {
     if(products_path.empty()) products_path = "products.txt";
 
     if(starting_budget == 0) throw std::invalid_argument("Store's budget can't be zero!");
+    else if (names_path.empty() || products_path.empty()) throw std::invalid_argument("You have to give a path! (maybe try whole path?)");
 
     // Creating auxiliary objects for simulation
     PeopleParser people_parser("/home/gosia/PROI/proi_24l_101_projekt/names.txt");

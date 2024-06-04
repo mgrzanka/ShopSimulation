@@ -21,7 +21,7 @@ Simulation::Simulation(unsigned int days, unsigned int starting_hour, unsigned i
 Store& store, std::vector<float> probabilities, FileHandler& file_handler):
 store{store}, simulation_interface{}, file_handler{file_handler}
 {
-    if(number_of_days == 0 || starting_hour == 0 || ending_hour == 0 || starting_hour > ending_hour) throw std::invalid_argument("In constructor of simulation: this simulation data can't be a zero");
+    if(days == 0 || starting_hour == 0 || ending_hour == 0 || starting_hour > ending_hour) throw std::invalid_argument("In constructor of simulation: this simulation data can't be a zero");
 
     this->number_of_days = days;
     this->ending_hour = ending_hour;
