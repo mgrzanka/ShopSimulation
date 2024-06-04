@@ -191,10 +191,10 @@ std::vector<std::unique_ptr<Product>> EventGenerator::pick_new_products(FileHand
 
 std::unique_ptr<RandomEvent> EventGenerator::draw_cleaner_cleans(std::vector<int> indexes) const
 {
-    int employee_indx = 0;
+    //int employee_indx = 0;
     std::vector<int> cleaner_indexes;
 
-    for (int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
+    for (unsigned long int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
     {
         // protection from picking someone that is leaving
         if (std::find(indexes.begin(), indexes.end(), employee_indx) != indexes.end()) continue;
@@ -204,6 +204,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_cleaner_cleans(std::vector<int
         if (Cleaner* cleaner = dynamic_cast<Cleaner*>(employee.get()))
         {
             cleaner_indexes.push_back(employee_indx);
+            (void)cleaner;
         }
     }
     if(cleaner_indexes.empty()) return nullptr;  // if there is no cleaner, this event is not possible
@@ -225,9 +226,9 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_cleaner_cleans(std::vector<int
 
 std::unique_ptr<RandomEvent> EventGenerator::draw_supplier_adds(std::vector<int> indexes, FileHandler& file_handler)
 {
-    int employee_indx = 0;
+    //int employee_indx = 0;
     std::vector<int> supplier_indexes;
-    for (int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
+    for (unsigned long int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
     {
         // protection from picking someone that is leaving
         if (std::find(indexes.begin(), indexes.end(), employee_indx) != indexes.end()) continue;
@@ -237,6 +238,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_supplier_adds(std::vector<int>
         if (Storekeeper* keeper = dynamic_cast<Storekeeper*>(employee.get()))
         {
             supplier_indexes.push_back(employee_indx);
+            (void)keeper;
         }
     }
     // loading possible products for store keeper
@@ -259,11 +261,11 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_supplier_adds(std::vector<int>
 
 std::unique_ptr<RandomEvent> EventGenerator::draw_manager_gives_raise(std::vector<int> indexes)
 {
-    int employee_indx = 0;
+    //int employee_indx = 0;
     std::vector<int> manager_indexes;
     std::vector<int> other_indexes;
     // like in previous ones
-    for (int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
+    for (unsigned long int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
     {
         if (std::find(indexes.begin(), indexes.end(), employee_indx) != indexes.end()) continue;
 
@@ -271,6 +273,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_manager_gives_raise(std::vecto
         if (Manager* manager = dynamic_cast<Manager*>(employee.get()))
         {
             manager_indexes.push_back(employee_indx);
+            (void)manager;
         }
         else other_indexes.push_back(employee_indx);
     }
@@ -303,10 +306,10 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_manager_gives_raise(std::vecto
 
 std::unique_ptr<RandomEvent> EventGenerator::draw_client_buys(std::vector<int> indexes)
 {
-    int employee_indx = 0;
+    //int employee_indx = 0;
     std::vector<int> cashier_indexes;
     // getting idexes of cashiers
-    for (int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
+    for (unsigned long int employee_indx=0; employee_indx<store_reference.on_shift_employees.size(); employee_indx++)
     {
         if (std::find(indexes.begin(), indexes.end(), employee_indx) != indexes.end()) continue;
 
@@ -314,6 +317,7 @@ std::unique_ptr<RandomEvent> EventGenerator::draw_client_buys(std::vector<int> i
         if (Cashier* cashier = dynamic_cast<Cashier*>(employee.get()))
         {
             cashier_indexes.push_back(employee_indx);
+            (void)cashier;
         }
     }
     if(cashier_indexes.empty() || store_reference.available_clients.empty() || store_reference.products.empty()) return nullptr;
