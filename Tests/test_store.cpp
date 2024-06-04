@@ -58,7 +58,7 @@ TEST_CASE("Store tests")
         std::vector<std::unique_ptr<Employee>> new_employees;
         new_employees.push_back(std::make_unique<Employee>("Pani Zosia", new_weekly_schedule, Money(2000), Money(1500)));
         store.add_employees(new_employees);
-        REQUIRE(store.get_employees().size() == 3);
+        REQUIRE(store.get_on_break_employees().size() == 3);
     }
 
     SECTION("Add Money") {
