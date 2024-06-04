@@ -14,7 +14,7 @@ Money Storekeeper::calculate_weekly_salary() const
 
 void Storekeeper::display_replenishing_message(std::vector<std::string> names, Money sum)
 {
-     employee_interface.print("Storekeeper " + this->get_name() + ": Those boxes are pretty heavy! I managed to replenish :");
+     employee_interface.print("Storekeeper " + this->get_name() + ": Those boxes are pretty heavy! I managed to replenish:");
      for(const auto& name : names) employee_interface.print(name+", ");
      employee_interface.print("for " + std::to_string(sum.get_whole_part())+"."+std::to_string(sum.get_cents())+sum.currency_name + ".\n");
 }
