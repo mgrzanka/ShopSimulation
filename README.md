@@ -4,7 +4,7 @@ This project was done on my first year on the Warsaw University of Technology. I
 # Usage
 To run this project, you need to compile all of the files (class files in corresponding directories, Structures.cpp/.hpp and main.cpp) and run main with some arguments. The usage is:
 ```
-<executable file> <days> <starting budget> <names file path> <products file path>"
+<executable file> <days> <starting budget> <names file path> <products file path>
 ```
 
 # Classes
