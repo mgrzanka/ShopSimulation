@@ -1,93 +1,149 @@
-# PROI_24L_101_Projekt
+# Store Operation Simulation
+This project was done on my first year on the Warsaw University of Technology. It executes a simulation of a small store. It was made to learn C++ and C++ OOP.
 
-
-
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
+# Usage
+To run this project, you need to compile all of the files (class files in corresponding directories, Structures.cpp/.hpp and main.cpp) and run main with some arguments. The usage is:
 ```
-cd existing_repo
-git remote add origin https://gitlab-stud.elka.pw.edu.pl/njarecka/proi_24l_101_projekt.git
-git branch -M main
-git push -uf origin main
+<executable file> <days> <starting budget> <names file path> <products file path>"
 ```
 
-## Integrate with your tools
+# Classes
+Below is the description of classes implemented in this project
 
-- [ ] [Set up project integrations](https://gitlab-stud.elka.pw.edu.pl/njarecka/proi_24l_101_projekt/-/settings/integrations)
+### Class: Employee
 
-## Collaborate with your team
+Store employees are responsible for various tasks related to store operations, such as opening and closing the store, maintaining order, restocking, assisting customers, calculating payments, receiving payments, and issuing receipts. Different types of employees inherit from the Employee class: Cashier, Cleaner, Storekeeper, and Manager.
+###### Attributes:
+- first name: Randomly selected from a database of names.
+- last name: Randomly selected from a database of surnames.
+- work schedule: Specifies the employee's working hours for each day of the week.
+- base hourly rate: Defines how much the employee earns per hour.
+- hourly rate bonus: Additional pay added to the base hourly rate.
+- user interface: For interacting with the simulation.
+###### Methods:
+- clean (Cleaner): Randomly performs cleaning tasks in the store.
+- assist customer (Cashier): Handles customer purchases and calculates the total payment.
+- pay employees (Manager): Processes salary payments for employees.
+- speak to customers: Methods to generate dialogues employees might have with customers.
+- calculate weekly salary: Computes the weekly earnings based on the work schedule and hourly rate.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### Class: Client
 
-## Test and Deploy
+Clients enter and exit the store, have a specific shopping budget, and spend a defined amount of time shopping. Clients can pick products and pay for them. Clients come in various types: manager’s friend, regular customer, and tourist.
+###### Attributes:
+- first name: Randomly selected from a database of names.
+- last name: Randomly selected from a database of surnames.
+- shopping budget: The maximum amount the client can spend during a visit.
+- user interface: For interacting with the simulation.
+###### Methods:
 
-Use the built-in continuous integration in GitLab.
+    enter store
+    exit store
+    purchase item: Allows the client to select products within their budget.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### Class: Product
 
-***
+Store products are categorized, with each category associated with a specific VAT rate. Product subclasses inherit from Product: Bakery, Beverages, Dairy, Fruits and Vegetables, Cosmetics, and Industrial Goods.
+###### Attributes:
+- name
+- price
+- optional attributes: Additional attributes specific to certain product categories.
+###### Methods:
+- calculate price with VAT: Determines the product price including tax.
+- get shelf location: Returns the shelf number where the product is located.
 
-# Editing this README
+### Class: Receipt
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Receipts provide information about the types and quantities of products sold.
+###### Attributes:
 
-## Suggestions for a good README
+    list of items: A vector of Product objects, including details about each.
+    total price with tax
+    total price without tax
+###### Methods:
+- display receipt
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+### Class: Store
 
-## Name
-Choose a self-explaining name for your project.
+This class stores information about products, employees, and customers in the store.
+###### Attributes:
+- employees: A vector of Employee objects, divided into:
+    - Employees currently in the store but available.
+    - Employees who are busy.
+    - Employees not currently in the store but associated with it.
+- clients: A vector of Client objects, divided into:
+    - Clients currently in the store.
+    - Potential clients who may visit.
+    - products: A vector of Product objects.
+    - available funds: The current balance of funds the store has.
+###### Methods:
+- add money to store
+- withdraw money from store: For example, when the store receives new inventory and has to pay for it.
+- add products
+- add clients
+- add employees
+- update employee schedules
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+### Class: Random Event
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Random events can occur during store operations. Each instance of this class represents a single event that may happen in the store. Events occur with specific probabilities.
+###### Attributes:
+- store: Uses store information needed to execute the event (e.g., available products, employees on duty).
+- additional attributes: Vary depending on the specific event.
+###### Methods:
+- display event: Shows a description of the event in the terminal.
+- execute event: Triggers specific actions involving the related objects.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+### Derived Classes:
+- ClientsBuysEvent
+- CleanerCleansEvent
+- ManagerGivesRiseEvent
+- SupplierAddsProductsEvent
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### Class: Event Generator
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Generates random events during the simulation.
+###### Attributes:
+- store
+- vector of event probabilities
+- vector of event indices
+###### Methods:
+- select new products for store restocking: Used in restocking events.
+- generate random events: Selects a random event and executes its corresponding method.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Class: Simulation
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+The main program class that runs the store simulation.
+###### Attributes:
+- number of days to simulate
+- store
+-  probabilities vector
+- file handler: Reads information about products, clients, and employees from files.
+###### Methods:
+- initialize first delivery
+- run: Executes the entire simulation. Random events are triggered using the EventGenerator, with specific probabilities for each event.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+The program loop runs for n iterations, where each iteration represents a 15-minute period of store operation. During each iteration:
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+- It determines whether a random event occurs.
+- Executes the selected event, making necessary changes to the store and displaying information about the event.
+- Checks and updates employee schedules as shifts start and end.
+- At the end of the loop, the store closes, and the simulation concludes.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+### Class: UserInterface
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Handles displaying messages to the user.
+###### Methods:
+- print: Displays messages.
 
-## License
-For open source projects, say how it is licensed.
+### Class: FileHandler
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Responsible for reading file data to create objects for employees, clients, and products.
+###### Attributes:
+- file path
+
+### Class: PeopleParser
+
+Creates objects for people-related classes (Employee and Client). It uses the FileHandler class to read data (e.g., names) from files and generate the corresponding objects.
+###### Attributes:
+- file path
